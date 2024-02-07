@@ -1,0 +1,35 @@
+name: Pull Request CI
+
+on:
+  # push:
+  #   branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  main:
+    name: Main Job
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup node from .nvmrc
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run ESLint and Prettier
+      run: npm run lint
+      
+    - name: Run Typescript static checks
+      run: tsc --noEmit
+
+    - name: Run unit tests
+      run: npm test
+
+    - name: Build project
+      run: npm run build
