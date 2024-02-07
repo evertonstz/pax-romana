@@ -14,6 +14,13 @@ export const setPageTheme = (
   dispatch({ type: 'SET_THEME', payload: theme });
 };
 
+export const setActualTemperature = (
+  dispatch: React.Dispatch<Action>,
+  temperature: number,
+) => {
+  dispatch({ type: 'SET_ACTUAL_TEMPERATURE', payload: temperature });
+};
+
 export const setHeaterSetPointTemperature = (
   dispatch: React.Dispatch<Action>,
   temperature: number,

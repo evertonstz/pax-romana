@@ -2,14 +2,32 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { PaxBluetoothServices } from '../enums/PaxBluetoothServices';
 import { Pax } from '../pax';
-import { BluetoothHookState } from './types';
+
+export type Error = { isError: boolean; message?: string };
+
+export type BluetoothHookState = {
+  server?: BluetoothRemoteGATTServer;
+  connected: boolean;
+  error: Error;
+  connect: () => void;
+  disconnect: () => void;
+  addCharacteristicListener: (
+    characteristicUUID: string,
+    callback: (event: Event) => void,
+  ) => void;
+};
 
 export const useBluetooth = (device: Pax.lib.Devices): BluetoothHookState => {
   const [server, setServer] = useState<BluetoothRemoteGATTServer | undefined>(
     undefined,
   );
   const [connected, setConnected] = useState<boolean>(false);
-  const [error, setError] = useState<string | undefined>(undefined);
+
+  const [error, setError] = useState<Error>({
+    isError: false,
+    message: undefined,
+  });
+
   const [isListenerAdded, setIsListenerAdded] = useState<boolean>(false);
 
   const connect = async () => {
@@ -28,24 +46,25 @@ export const useBluetooth = (device: Pax.lib.Devices): BluetoothHookState => {
       if (server) {
         setServer(server);
         setConnected(true);
-        setError(undefined);
+        setError({ isError: false, message: undefined });
 
         // Listen for the disconnect event
         btDevice.addEventListener('gattserverdisconnected', () => {
           setConnected(false);
           setServer(undefined);
-          setError('Disconnected from Bluetooth server');
+          setIsListenerAdded(false);
         });
       }
-    } catch (err) {
-      console.error('Error connecting to Bluetooth device:', err);
+    } catch (error) {
       setConnected(false);
-      setError('Error connecting to Bluetooth device');
+      setError({ isError: true, message: error as string });
     }
   };
 
   const addCharacteristicListener = useCallback(
     async (characteristicUUID: string, callback: (event: Event) => void) => {
+      if (!connected) throw new Error('Device is not connected');
+
       if (server && !isListenerAdded) {
         try {
           const service = await server.getPrimaryService(
@@ -54,7 +73,6 @@ export const useBluetooth = (device: Pax.lib.Devices): BluetoothHookState => {
           const characteristic =
             await service.getCharacteristic(characteristicUUID);
 
-          // characteristic.addEventListener('characteristicvaluechanged', callback);
           characteristic
             .startNotifications()
             .then(characteristic =>
@@ -63,10 +81,9 @@ export const useBluetooth = (device: Pax.lib.Devices): BluetoothHookState => {
                 callback,
               ),
             );
-
-          setIsListenerAdded(true); // Set listener status to true after successful addition
+          setIsListenerAdded(true);
         } catch (error) {
-          console.error('Error getting service/characteristic:', error);
+          throw new Error(`Error getting service/characteristic: ${error}`);
         }
       }
     },
@@ -78,6 +95,7 @@ export const useBluetooth = (device: Pax.lib.Devices): BluetoothHookState => {
       server.disconnect();
       setServer(undefined);
       setConnected(false);
+      setIsListenerAdded(false);
     }
   }, [server]);
 
