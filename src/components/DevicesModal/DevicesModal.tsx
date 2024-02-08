@@ -16,14 +16,14 @@ const buildOptions = (devices: Pax.lib.Devices[]) => {
   });
 };
 
-type DevicesModalProps = {
+interface DevicesModalProps {
   open: boolean;
   devices: Pax.lib.Devices[];
   defaultDevice: Pax.lib.Devices;
   onCancel: (
     e: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<Element>,
   ) => void;
-};
+}
 
 const DevicesModal = ({
   open,

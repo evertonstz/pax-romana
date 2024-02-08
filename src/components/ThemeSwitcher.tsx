@@ -20,7 +20,7 @@ const ThemeSwitcher = () => {
     if (state.pageTheme !== localPageTheme) {
       setPageTheme(dispatch, localPageTheme);
     }
-  }, []);
+  }, [dispatch, localPageTheme, state.pageTheme]);
 
   const handleSwitchOnChange = (checked: boolean): void => {
     const setTheme = (theme: Theme) => {
