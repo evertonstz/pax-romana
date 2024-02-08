@@ -1,5 +1,5 @@
 import { useLocalStorage } from '@uidotdev/usehooks';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { Pax } from '../pax';
 import { useCurrentDevice } from './useCurrentDevice';
@@ -11,18 +11,6 @@ const useDevicesLocalStorage = () => {
   );
   const { currentDevice, saveCurrentDevice } = useCurrentDevice();
 
-  useEffect(() => {
-    if (currentDevice !== undefined && !inStore(currentDevice)) {
-      // removes current device in case it gets deleted from store
-      saveCurrentDevice(undefined);
-    }
-
-    if (store.length === 1 && !currentDevice) {
-      // sets the only available device as current device
-      saveCurrentDevice(store[0]);
-    }
-  }, [store, currentDevice]);
-
   const appendStore = (serial: Pax.lib.PaxSerial): void => {
     if (!inStore(serial)) {
       const newStore: Pax.lib.PaxSerial[] = [...store, serial];
@@ -33,17 +21,20 @@ const useDevicesLocalStorage = () => {
     }
   };
 
-  const inStore = (serial: Pax.lib.PaxSerial): boolean => {
-    const existingInstance = store.find(
-      foundDevice =>
-        foundDevice.device === serial.device &&
-        foundDevice.serial === serial.serial,
-    );
-    if (!existingInstance) {
-      return false;
-    }
-    return true;
-  };
+  const inStore = useCallback(
+    (serial: Pax.lib.PaxSerial): boolean => {
+      const existingInstance = store.find(
+        foundDevice =>
+          foundDevice.device === serial.device &&
+          foundDevice.serial === serial.serial,
+      );
+      if (!existingInstance) {
+        return false;
+      }
+      return true;
+    },
+    [store],
+  );
 
   const popFromStore = (serial: Pax.lib.PaxSerial): void => {
     const index = store.findIndex(
@@ -57,6 +48,18 @@ const useDevicesLocalStorage = () => {
       saveStore(newStore);
     }
   };
+
+  useEffect(() => {
+    if (currentDevice !== undefined && !inStore(currentDevice)) {
+      // removes current device in case it gets deleted from store
+      saveCurrentDevice(undefined);
+    }
+
+    if (store.length === 1 && !currentDevice) {
+      // sets the only available device as current device
+      saveCurrentDevice(store[0]);
+    }
+  }, [store, currentDevice, inStore, saveCurrentDevice]);
 
   return {
     store,

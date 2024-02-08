@@ -5,9 +5,9 @@ import Meta from 'antd/es/card/Meta';
 import { useDevicesLocalStorage } from '../../hooks';
 import { Pax } from '../../pax';
 
-type DeviceCardProps = {
+interface DeviceCardProps {
   serial: Pax.lib.PaxSerial;
-};
+}
 
 const DeviceCard = ({ serial }: DeviceCardProps) => {
   const { popFromStore, saveCurrentDevice, currentDevice } =

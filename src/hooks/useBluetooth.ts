@@ -3,19 +3,22 @@ import { useCallback, useEffect, useState } from 'react';
 import { PaxBluetoothServices } from '../enums/PaxBluetoothServices';
 import { Pax } from '../pax';
 
-export type Error = { isError: boolean; message?: string };
+export interface Error {
+  isError: boolean;
+  message?: string;
+}
 
-export type BluetoothHookState = {
+export interface BluetoothHookState {
   server?: BluetoothRemoteGATTServer;
   connected: boolean;
   error: Error;
-  connect: () => void;
+  connect: () => Promise<void>;
   disconnect: () => void;
   addCharacteristicListener: (
     characteristicUUID: string,
     callback: (event: Event) => void,
-  ) => void;
-};
+  ) => Promise<void>;
+}
 
 export const useBluetooth = (device: Pax.lib.Devices): BluetoothHookState => {
   const [server, setServer] = useState<BluetoothRemoteGATTServer | undefined>(
@@ -80,14 +83,17 @@ export const useBluetooth = (device: Pax.lib.Devices): BluetoothHookState => {
                 'characteristicvaluechanged',
                 callback,
               ),
-            );
+            )
+            .catch(error => {
+              throw new Error(`Error starting notifications: ${error}`);
+            });
           setIsListenerAdded(true);
         } catch (error) {
-          throw new Error(`Error getting service/characteristic: ${error}`);
+          throw new Error(`Error getting service/characteristic`);
         }
       }
     },
-    [server, isListenerAdded],
+    [connected, server, isListenerAdded],
   );
 
   const disconnect = useCallback(() => {

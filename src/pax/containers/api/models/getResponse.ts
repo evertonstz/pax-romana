@@ -1,7 +1,7 @@
 import { MessageAbs } from '../../../core/messages/MessageAbs';
 import { Devices } from '../../lib';
 
-export type GetResponse = {
+export interface GetResponse {
   device: Devices;
   message: MessageAbs;
-};
+}

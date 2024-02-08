@@ -1,9 +1,10 @@
 import { theme } from 'antd';
 import { ReactNode } from 'react';
 
-type Props = {
+interface Props {
   children: ReactNode;
-};
+}
+
 export const PageLayout = ({ children }: Props) => {
   const { token } = theme.useToken();
   return (

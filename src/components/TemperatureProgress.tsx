@@ -1,11 +1,11 @@
 import { Progress } from 'antd';
 
-type TemperatureProgressProps = {
+interface TemperatureProgressProps {
   connected: boolean;
   heaterSetPointTemperature: number;
   actualTemperature: number;
   unit: 'C' | 'F';
-};
+}
 
 const TemperatureProgress = ({
   connected,

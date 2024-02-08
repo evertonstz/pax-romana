@@ -1,4 +1,4 @@
-function getEnumKeyByEnumValue<T extends { [index: string]: string }>(
+function getEnumKeyByEnumValue<T extends Record<string, string>>(
   myEnum: T,
   enumValue: string,
 ): keyof T | null {

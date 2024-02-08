@@ -2,9 +2,9 @@ import { useWindowSize } from '@uidotdev/usehooks';
 import { theme } from 'antd';
 import { ReactNode, useEffect, useState } from 'react';
 
-type Props = {
+interface Props {
   children: ReactNode;
-};
+}
 
 const ResizableSquare = ({ children }: Props) => {
   const [isFullScreen, setIsFullScreen] = useState(false);

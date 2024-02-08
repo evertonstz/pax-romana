@@ -1,5 +1,5 @@
 import { Button, ConfigProvider, Flex, Row, Typography, theme } from 'antd';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { PageLayout } from './Layout';
 import ResizableSquare from './ResizableSquare';
@@ -61,7 +61,29 @@ function App() {
 
   const bluetoothState = useBluetooth(Pax.lib.Devices.PAX3);
 
-  const handleUpdateOnInterval = async () => {
+  // const handleUpdateOnInterval = async (bluetoothState: BluetoothHookState) => {
+  //   if (deviceStore.currentDevice === undefined || !bluetoothState.connected) {
+  //     return;
+  //   }
+
+  //   const response = await consumePacket(
+  //     bluetoothState,
+  //     deviceStore.currentDevice,
+  //   );
+
+  //   if (response.message instanceof Pax.lib.messages.UnknownMessage) {
+  //     return;
+  //   }
+
+  //   if (response.message instanceof Pax.lib.messages.ActualTemperatureMessage) {
+  //     setActualTemperature(dispatch, response.message.temperature);
+  //   }
+  //   if (response.message instanceof Pax.lib.messages.HeaterSetPointMessage) {
+  //     setHeaterSetPointTemperature(dispatch, response.message.temperature);
+  //   }
+  // };
+
+  const handleUpdateOnInterval = useCallback(async () => {
     if (deviceStore.currentDevice === undefined || !bluetoothState.connected) {
       return;
     }
@@ -81,21 +103,21 @@ function App() {
     if (response.message instanceof Pax.lib.messages.HeaterSetPointMessage) {
       setHeaterSetPointTemperature(dispatch, response.message.temperature);
     }
-  };
+  }, [bluetoothState, deviceStore, dispatch]);
 
   useEffect(() => {
     if (bluetoothState.connected) {
       // add event listener to consume notifications
       // this is needed because new info to read will only
       // be broadcasted once a new Notification is consumed
-      bluetoothState.addCharacteristicListener(
+      void bluetoothState.addCharacteristicListener(
         PaxBluetoothCharacteristics.Notifications,
         () => {
-          handleUpdateOnInterval();
+          void handleUpdateOnInterval();
         },
       );
     }
-  }, [bluetoothState]);
+  }, [bluetoothState, handleUpdateOnInterval]);
 
   return (
     <ConfigProvider theme={{ algorithm: getTheme(state.pageTheme) }}>
