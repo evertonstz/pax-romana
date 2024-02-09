@@ -1,7 +1,7 @@
 import { MoonFilled, SunFilled } from '@ant-design/icons';
 import { Switch, Tooltip } from 'antd';
 
-import useThemeContext from '../state/hooks/useThemeContext';
+import { useThemeContext } from '../state/hooks';
 
 const ThemeSwitcher = () => {
   const { state, actions } = useThemeContext();

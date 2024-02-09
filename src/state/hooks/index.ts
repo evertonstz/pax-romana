@@ -1,1 +1,2 @@
-export * from './useAppContext';
+export * from './usePaxContext';
+export * from './useThemeContext';

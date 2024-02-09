@@ -5,7 +5,6 @@ import { PageLayout } from './Layout';
 import ResizableSquare from './ResizableSquare';
 import DevicesModal from './components/DevicesModal';
 import TemperatureProgress from './components/TemperatureProgress';
-// import './App.css';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import { PaxBluetoothCharacteristics } from './enums/PaxBluetoothCharacteristics';
 import { PaxBluetoothServices } from './enums/PaxBluetoothServices';
@@ -15,8 +14,7 @@ import {
   useDevicesLocalStorage,
 } from './hooks';
 import { Pax } from './pax';
-import useAppContext from './state/hooks/useAppContext';
-import useThemeContext from './state/hooks/useThemeContext';
+import { usePaxContext, useThemeContext } from './state/hooks';
 import { ThemeColor } from './state/themeState/types';
 
 const DEVICES = [Pax.lib.Devices.PAX3];
@@ -51,7 +49,7 @@ const consumePacket = async (
 };
 
 function App() {
-  const { state, actions } = useAppContext();
+  const { state, actions } = usePaxContext();
   const { state: themeState } = useThemeContext();
   const deviceStore = useDevicesLocalStorage();
 

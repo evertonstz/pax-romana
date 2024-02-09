@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App.tsx';
 import './index.css';
-import { AppProvider, ThemeProvider } from './state';
+import { PaxProvider, ThemeProvider } from './state';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <AppProvider>
+      <PaxProvider>
         <App />
-      </AppProvider>
+      </PaxProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );

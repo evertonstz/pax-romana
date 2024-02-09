@@ -5,7 +5,7 @@ import { PaxActions } from './paxState/actions';
 import reducer from './paxState/reducer';
 import { PaxState } from './paxState/types';
 
-export interface AppContextProps {
+export interface PaxContextProps {
   state: PaxState;
   dispatch: Dispatch<PaxActions>;
 }
@@ -15,16 +15,16 @@ const initialPaxState: PaxState = {
   heaterSetPointTemperature: 0,
 };
 
-export const AppContext = createContext<AppContextProps | undefined>(undefined);
+export const PaxContext = createContext<PaxContextProps | undefined>(undefined);
 
-export const AppProvider: React.FC<{ children: ReactNode }> = ({
+export const PaxProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialPaxState);
 
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <PaxContext.Provider value={{ state, dispatch }}>
       {children}
-    </AppContext.Provider>
+    </PaxContext.Provider>
   );
 };

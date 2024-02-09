@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { AppContext } from '../AppProvider';
+import { PaxContext } from '../PaxProvider';
 import { BuiltPaxActions, buildActions } from '../paxState/actions';
 import { PaxState } from '../paxState/types';
 
@@ -9,12 +9,10 @@ interface PaxContextHookType {
   actions: BuiltPaxActions;
 }
 
-const useAppContext = (): PaxContextHookType => {
-  const context = useContext(AppContext);
+export const usePaxContext = (): PaxContextHookType => {
+  const context = useContext(PaxContext);
   if (!context) {
     throw new Error('useAppContext must be used within an AppProvider');
   }
   return { state: context.state, actions: buildActions(context.dispatch) };
 };
-
-export default useAppContext;
