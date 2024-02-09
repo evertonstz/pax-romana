@@ -25,7 +25,6 @@ export const ThemeContext = createContext<ThemeContextProps | undefined>(
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  // const [state, dispatch] = useReducer(reducer, initialState);
   const [localThemeColor, saveLocalThemeColor] = useLocalStorage<ThemeColor>(
     LOCAL_STORAGE_THEME_NAME,
     'light',
