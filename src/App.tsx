@@ -16,6 +16,7 @@ import {
 } from './hooks';
 import { Pax } from './pax';
 import useAppContext from './state/hooks/useAppContext';
+import useThemeContext from './state/hooks/useThemeContext';
 import {
   setActualTemperature,
   setHeaterSetPointTemperature,
@@ -55,6 +56,7 @@ const consumePacket = async (
 
 function App() {
   const { state, dispatch } = useAppContext();
+  const { state: themeState } = useThemeContext();
   const deviceStore = useDevicesLocalStorage();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -120,7 +122,7 @@ function App() {
   }, [bluetoothState, handleUpdateOnInterval]);
 
   return (
-    <ConfigProvider theme={{ algorithm: getTheme(state.pageTheme) }}>
+    <ConfigProvider theme={{ algorithm: getTheme(themeState.themeColor) }}>
       <PageLayout>
         <DevicesModal
           open={isModalOpen}
