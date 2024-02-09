@@ -5,3 +5,4 @@ export * from './HeaterSetPointMessage';
 export * from './UnknownMessage';
 export * from './MessageAbs';
 export * from './ReadAndWriteMessageAbs';
+export * from './HeatingStateMessage';

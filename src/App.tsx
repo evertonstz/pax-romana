@@ -77,6 +77,9 @@ function App() {
     if (response.message instanceof Pax.lib.messages.HeaterSetPointMessage) {
       actions.setHeaterSetPointTemperature(response.message.temperature);
     }
+    if (response.message instanceof Pax.lib.messages.HeatingStateMessage) {
+      actions.setHeatingState(response.message.heatingState);
+    }
   }, [actions, bluetoothState, deviceStore.currentDevice]);
 
   useEffect(() => {

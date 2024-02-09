@@ -7,6 +7,8 @@ const reducer = (state: PaxState, action: PaxActions): PaxState => {
       return { ...state, actualTemperature: action.payload };
     case 'SET_HEATER_SETPOINT_TEMPERATURE':
       return { ...state, heaterSetPointTemperature: action.payload };
+    case 'SET_HEATING_STATE':
+      return { ...state, heatingSate: action.payload };
     default:
       return state;
   }

@@ -1,5 +1,10 @@
 import { Pax3Imp } from '../../../core/crypt';
-import { ActualTemperatureMessage } from '../../../core/messages';
+import {
+  ActualTemperatureMessage,
+  HeaterSetPointMessage,
+  HeatingStateMessage,
+  TargetTemperatureMessage,
+} from '../../../core/messages';
 import { Devices, Messages } from '../../../shared/enums';
 import {
   PaxDecryptedPacket,
@@ -24,7 +29,7 @@ describe('get.ts', () => {
   });
   describe('buildPaxClassFromDevice', () => {
     it('should return Pax3Imp when device is Pax3Device', () => {
-      const response = buildPaxClassFromDevice(pax3Device, paxSerial);
+      const response = buildPaxClassFromDevice(paxSerial);
       expect(response instanceof Pax3Imp).toBe(true);
     });
   });
@@ -37,6 +42,33 @@ describe('get.ts', () => {
         paxDecryptedPacket,
       );
       expect(response instanceof ActualTemperatureMessage).toBe(true);
+    });
+    it('should return TargetTemperatureMessage when ATTRIBUTE_CURRENT_TARGET_TEMP', () => {
+      const paxDecryptedPacket = new PaxDecryptedPacket(new ArrayBuffer(16));
+      paxDecryptedPacket.setUint8(0, 1);
+      const response = decodeDecryptedPacket(
+        Messages.ATTRIBUTE_CURRENT_TARGET_TEMP,
+        paxDecryptedPacket,
+      );
+      expect(response instanceof TargetTemperatureMessage).toBe(true);
+    });
+    it('should return HeaterSetPointMessage when ATTRIBUTE_HEATER_SET_POINT', () => {
+      const paxDecryptedPacket = new PaxDecryptedPacket(new ArrayBuffer(16));
+      paxDecryptedPacket.setUint8(0, 1);
+      const response = decodeDecryptedPacket(
+        Messages.ATTRIBUTE_HEATER_SET_POINT,
+        paxDecryptedPacket,
+      );
+      expect(response instanceof HeaterSetPointMessage).toBe(true);
+    });
+    it('should return HeaterSetPointMessage when ATTRIBUTE_HEATING_STATE', () => {
+      const paxDecryptedPacket = new PaxDecryptedPacket(new ArrayBuffer(16));
+      paxDecryptedPacket.setUint8(0, 1);
+      const response = decodeDecryptedPacket(
+        Messages.ATTRIBUTE_HEATING_STATE,
+        paxDecryptedPacket,
+      );
+      expect(response instanceof HeatingStateMessage).toBe(true);
     });
   });
 });
