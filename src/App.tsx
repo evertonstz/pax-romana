@@ -5,7 +5,6 @@ import { PageLayout } from './Layout';
 import ResizableSquare from './ResizableSquare';
 import DevicesModal from './components/DevicesModal';
 import TemperatureProgress from './components/TemperatureProgress';
-// import './App.css';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import { PaxBluetoothCharacteristics } from './enums/PaxBluetoothCharacteristics';
 import { PaxBluetoothServices } from './enums/PaxBluetoothServices';
@@ -15,17 +14,12 @@ import {
   useDevicesLocalStorage,
 } from './hooks';
 import { Pax } from './pax';
-import useAppContext from './state/hooks/useAppContext';
-import useThemeContext from './state/hooks/useThemeContext';
-import {
-  setActualTemperature,
-  setHeaterSetPointTemperature,
-} from './state/paxState/actions';
-import { Theme } from './state/paxState/types';
+import { usePaxContext, useThemeContext } from './state/hooks';
+import { ThemeColor } from './state/themeState/types';
 
 const DEVICES = [Pax.lib.Devices.PAX3];
 
-const getTheme = (color: Theme) => {
+const getTheme = (color: ThemeColor) => {
   if (color === 'light') return theme.defaultAlgorithm;
   return theme.darkAlgorithm;
 };
@@ -55,35 +49,13 @@ const consumePacket = async (
 };
 
 function App() {
-  const { state, dispatch } = useAppContext();
+  const { state, actions } = usePaxContext();
   const { state: themeState } = useThemeContext();
   const deviceStore = useDevicesLocalStorage();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const bluetoothState = useBluetooth(Pax.lib.Devices.PAX3);
-
-  // const handleUpdateOnInterval = async (bluetoothState: BluetoothHookState) => {
-  //   if (deviceStore.currentDevice === undefined || !bluetoothState.connected) {
-  //     return;
-  //   }
-
-  //   const response = await consumePacket(
-  //     bluetoothState,
-  //     deviceStore.currentDevice,
-  //   );
-
-  //   if (response.message instanceof Pax.lib.messages.UnknownMessage) {
-  //     return;
-  //   }
-
-  //   if (response.message instanceof Pax.lib.messages.ActualTemperatureMessage) {
-  //     setActualTemperature(dispatch, response.message.temperature);
-  //   }
-  //   if (response.message instanceof Pax.lib.messages.HeaterSetPointMessage) {
-  //     setHeaterSetPointTemperature(dispatch, response.message.temperature);
-  //   }
-  // };
 
   const handleUpdateOnInterval = useCallback(async () => {
     if (deviceStore.currentDevice === undefined || !bluetoothState.connected) {
@@ -100,12 +72,12 @@ function App() {
     }
 
     if (response.message instanceof Pax.lib.messages.ActualTemperatureMessage) {
-      setActualTemperature(dispatch, response.message.temperature);
+      actions.setActualTemperature(response.message.temperature);
     }
     if (response.message instanceof Pax.lib.messages.HeaterSetPointMessage) {
-      setHeaterSetPointTemperature(dispatch, response.message.temperature);
+      actions.setHeaterSetPointTemperature(response.message.temperature);
     }
-  }, [bluetoothState, deviceStore, dispatch]);
+  }, [actions, bluetoothState, deviceStore.currentDevice]);
 
   useEffect(() => {
     if (bluetoothState.connected) {
