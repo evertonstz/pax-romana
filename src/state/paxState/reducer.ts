@@ -1,6 +1,12 @@
 import { PaxActions } from './actions';
 import { PaxState } from './types';
 
+export const initialPaxState: PaxState = {
+  actualTemperature: 0,
+  heaterSetPointTemperature: 0,
+  heatingSate: undefined,
+};
+
 const reducer = (state: PaxState, action: PaxActions): PaxState => {
   switch (action.type) {
     case 'SET_ACTUAL_TEMPERATURE':

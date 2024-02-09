@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { PageLayout } from './Layout';
 import ResizableSquare from './ResizableSquare';
 import DevicesModal from './components/DevicesModal';
+import HeaterStatus from './components/HeaterStatus';
 import TemperatureProgress from './components/TemperatureProgress';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import { PaxBluetoothCharacteristics } from './enums/PaxBluetoothCharacteristics';
@@ -122,6 +123,7 @@ function App() {
               actualTemperature={state.actualTemperature}
               unit={'C'}
             />
+            <HeaterStatus heaterStatus={state.heatingSate} />
             <Typography.Text>
               Current Device:{' '}
               {!deviceStore.currentDevice
