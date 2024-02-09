@@ -39,11 +39,10 @@ jobs:
 
       - name: Build project
         run: npm run build
-
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v3
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: production-files
           path: ./dist
 
   deploy:
@@ -56,5 +55,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        path: ./dist
-
