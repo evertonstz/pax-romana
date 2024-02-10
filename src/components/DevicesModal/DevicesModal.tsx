@@ -20,7 +20,7 @@ interface DevicesModalProps {
   open: boolean;
   devices: Pax.lib.Devices[];
   defaultDevice: Pax.lib.Devices;
-  onCancel: (
+  onCancel?: (
     e: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<Element>,
   ) => void;
 }
@@ -81,6 +81,7 @@ const DevicesModal = ({
   };
 
   const renderFooter = () => {
+    // TODO add on enter key press to add new device
     return (
       <Row justify="center">
         <Space.Compact style={{ width: '100%' }}>
@@ -118,7 +119,7 @@ const DevicesModal = ({
       <Drawer
         title={'Your Pax Romana devices'}
         height={'100vh'}
-        visible={open}
+        open={open}
         onClose={onCancel}
         placement="bottom"
         footer={renderFooter()}

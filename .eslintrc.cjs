@@ -23,6 +23,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'eqeqeq': 'error',
     'prettier/prettier': 'error',
     'max-len': ['error', 100],
     'no-console': 'error'

@@ -1,6 +1,6 @@
 import { useLocalStorage } from '@uidotdev/usehooks';
 
-import { Pax } from '../pax';
+import { Pax } from '../../pax';
 
 const CURRENT_DEVICE_STORE_NAME = 'currentDevice';
 
@@ -18,4 +18,4 @@ const useCurrentDevice = (): CurrentDeviceHookType => {
   return { currentDevice, saveCurrentDevice };
 };
 
-export { useCurrentDevice };
+export default useCurrentDevice;
