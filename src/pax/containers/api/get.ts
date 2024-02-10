@@ -59,5 +59,5 @@ export const get = (
     ? new UnknownMessage(messageTypeInt, decryptedPacket)
     : decodeDecryptedPacket(messageType, decryptedPacket);
 
-  return { device: paxSerial.device, message: decodedPacket };
+  return { device: paxSerial.device, message: decodedPacket as MessageAbs };
 };

@@ -7,13 +7,8 @@ import DevicesModal from './components/DevicesModal';
 import HeaterStatus from './components/HeaterStatus';
 import TemperatureProgress from './components/TemperatureProgress';
 import ThemeSwitcher from './components/ThemeSwitcher';
-import { PaxBluetoothCharacteristics } from './enums/PaxBluetoothCharacteristics';
-import { PaxBluetoothServices } from './enums/PaxBluetoothServices';
-import {
-  BluetoothHookState,
-  useBluetooth,
-  useDevicesLocalStorage,
-} from './hooks';
+import { useDevicesLocalStorage, usePaxBluetoothServices } from './hooks';
+import { BaseBluetoothException } from './hooks/usePaxBluetoothServices/useBluetooth/exceptions';
 import { Pax } from './pax';
 import { usePaxContext, useThemeContext } from './state/hooks';
 import { ThemeColor } from './state/themeState/types';
@@ -25,77 +20,59 @@ const getTheme = (color: ThemeColor) => {
   return theme.darkAlgorithm;
 };
 
-const consumePacket = async (
-  bluetooth: BluetoothHookState,
-  serial: Pax.lib.PaxSerial,
-): Promise<Pax.api.models.GetResponse> => {
-  if (!bluetooth.server) {
-    throw new Error('No server found');
-  }
-
-  const service = await bluetooth.server.getPrimaryService(
-    PaxBluetoothServices.MainService,
-  );
-
-  const readAndWriteCharacteristic = await service?.getCharacteristic(
-    PaxBluetoothCharacteristics.ReadAndWrite,
-  );
-
-  const currentValue = await readAndWriteCharacteristic?.readValue();
-  const dec_message = Pax.api.get(
-    new Pax.lib.PaxEncryptedPacket(currentValue.buffer),
-    serial,
-  );
-  return dec_message;
-};
-
 function App() {
   const { state, actions } = usePaxContext();
   const { state: themeState } = useThemeContext();
   const deviceStore = useDevicesLocalStorage();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const bluetoothState = useBluetooth(Pax.lib.Devices.PAX3);
+  // TODO do not render if there's no device in store
+  const bluetoothState = usePaxBluetoothServices(deviceStore.currentDevice);
 
-  const handleUpdateOnInterval = useCallback(async () => {
+  const messagesConsumer = useCallback(() => {
     if (deviceStore.currentDevice === undefined || !bluetoothState.connected) {
       return;
     }
-
-    const response = await consumePacket(
-      bluetoothState,
-      deviceStore.currentDevice,
-    );
-
-    if (response.message instanceof Pax.lib.messages.UnknownMessage) {
-      return;
-    }
-
-    if (response.message instanceof Pax.lib.messages.ActualTemperatureMessage) {
-      actions.setActualTemperature(response.message.temperature);
-    }
-    if (response.message instanceof Pax.lib.messages.HeaterSetPointMessage) {
-      actions.setHeaterSetPointTemperature(response.message.temperature);
-    }
-    if (response.message instanceof Pax.lib.messages.HeatingStateMessage) {
-      actions.setHeatingState(response.message.heatingState);
-    }
+    bluetoothState
+      .readFromMainService()
+      .then(message => {
+        if (message instanceof Pax.lib.messages.UnknownMessage) {
+          return;
+        }
+        if (message instanceof Pax.lib.messages.ActualTemperatureMessage) {
+          actions.setActualTemperature(message.temperature);
+        }
+        if (message instanceof Pax.lib.messages.HeaterSetPointMessage) {
+          actions.setHeaterSetPointTemperature(message.temperature);
+        }
+        if (message instanceof Pax.lib.messages.HeatingStateMessage) {
+          actions.setHeatingState(message.heatingState);
+        }
+      })
+      .catch(e => {
+        if (e instanceof BaseBluetoothException) {
+          // eslint-disable-next-line no-console
+          console.error('messagesConsumer', String(e));
+        }
+      });
   }, [actions, bluetoothState, deviceStore.currentDevice]);
 
   useEffect(() => {
-    if (bluetoothState.connected) {
+    if (
+      bluetoothState.connected &&
+      !bluetoothState.eventListener.isListenerAdded
+    ) {
       // add event listener to consume notifications
       // this is needed because new info to read will only
       // be broadcasted once a new Notification is consumed
-      void bluetoothState.addCharacteristicListener(
-        PaxBluetoothCharacteristics.Notifications,
-        () => {
-          void handleUpdateOnInterval();
-        },
-      );
+      bluetoothState.eventListener.startListening(messagesConsumer).catch(e => {
+        if (e instanceof BaseBluetoothException) {
+          // eslint-disable-next-line no-console
+          console.error('startListening', String(e));
+        }
+      });
     }
-  }, [bluetoothState, handleUpdateOnInterval]);
+  }, [bluetoothState, messagesConsumer]);
 
   return (
     <ConfigProvider theme={{ algorithm: getTheme(themeState.themeColor) }}>

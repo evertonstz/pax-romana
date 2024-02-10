@@ -1,3 +1,2 @@
-export * from './useBluetooth';
 export * from './useDevicesLocalStorage';
-export * from './useCurrentDevice';
+export * from './usePaxBluetoothServices';

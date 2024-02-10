@@ -1,10 +1,10 @@
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useCallback, useEffect } from 'react';
 
-import { Pax } from '../pax';
-import { useCurrentDevice } from './useCurrentDevice';
+import { Pax } from '../../pax';
+import useCurrentDevice from './useCurrentDevice';
 
-const useDevicesLocalStorage = () => {
+export const useDevicesLocalStorage = () => {
   const [store, saveStore] = useLocalStorage<Pax.lib.PaxSerial[]>(
     'devicesSerials',
     [],
@@ -71,5 +71,3 @@ const useDevicesLocalStorage = () => {
     saveCurrentDevice,
   };
 };
-
-export { useDevicesLocalStorage };
