@@ -1,4 +1,5 @@
-import { useDevicesLocalStorage } from '../../hooks';
+import { useDevicesLocalStorage } from '@/hooks';
+
 import { NoSelectedDevice } from './NoSelectedDevice';
 import { SelectedDevice } from './SelectedDevice';
 

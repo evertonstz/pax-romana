@@ -1,4 +1,4 @@
-import { Pax } from '../../pax';
+import { Pax } from '@/pax';
 
 export type PaxActions =
   | { type: 'SET_ACTUAL_TEMPERATURE'; payload: number }

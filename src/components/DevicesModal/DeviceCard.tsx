@@ -1,9 +1,8 @@
+import { useDevicesLocalStorage } from '@/hooks';
+import { Pax } from '@/pax';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 import { Avatar, Button, Card, Popconfirm } from 'antd';
 import Meta from 'antd/es/card/Meta';
-
-import { useDevicesLocalStorage } from '../../hooks';
-import { Pax } from '../../pax';
 
 interface DeviceCardProps {
   serial: Pax.lib.PaxSerial;

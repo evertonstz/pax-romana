@@ -1,6 +1,5 @@
+import { Pax } from '@/pax';
 import { Typography } from 'antd';
-
-import { Pax } from '../../pax';
 
 interface HeaterStatusProps {
   heaterStatus?: Pax.lib.HeatingStates;

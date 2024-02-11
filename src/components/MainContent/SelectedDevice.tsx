@@ -1,12 +1,12 @@
+import { usePaxBluetoothServices } from '@/hooks';
+// eslint-disable-next-line prettier/prettier
+import { BaseBluetoothException } 
+        from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
+import { Pax } from '@/pax';
+import { usePaxContext } from '@/state/hooks';
 import { Button, Flex, Row, Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 
-import { usePaxBluetoothServices } from '../../hooks';
-// eslint-disable-next-line prettier/prettier
-import { BaseBluetoothException } 
-        from '../../hooks/usePaxBluetoothServices/useBluetooth/exceptions';
-import { Pax } from '../../pax';
-import { usePaxContext } from '../../state/hooks';
 import DevicesModal from '../DevicesModal';
 import HeaterStatus from '../HeaterStatus';
 import TemperatureProgress from '../TemperatureProgress';

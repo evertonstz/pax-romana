@@ -1,9 +1,9 @@
+import { useDevicesLocalStorage } from '@/hooks';
+import { Pax } from '@/pax';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { Button, Col, Drawer, Input, Modal, Row, Select, Space } from 'antd';
 import { useState } from 'react';
 
-import { useDevicesLocalStorage } from '../../hooks';
-import { Pax } from '../../pax';
 import DeviceCard from './DeviceCard';
 import NoDevices from './NoDevices';
 
