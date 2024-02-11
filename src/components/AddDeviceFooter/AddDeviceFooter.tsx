@@ -3,7 +3,7 @@ import { Pax } from '@/pax';
 import { Button, Input, Select, Space } from 'antd';
 import { useState } from 'react';
 
-import { SUPPORTED_DEVICES } from './constants';
+import { SUPPORTED_DEVICES } from '../DevicesModal/constants';
 
 const SERIAL_SIZE = 8;
 const INPUT_PLACEHOLDER = `Insert device's ${SERIAL_SIZE} digit serial`;

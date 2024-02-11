@@ -1,7 +1,7 @@
 import { Flex, Row } from 'antd';
 
-import AddDeviceFooter from '../DevicesModal/AddDeviceFooter';
-import PaxPairingSvg from '../DevicesModal/PaxPairingSvg';
+import AddDeviceFooter from '../AddDeviceFooter';
+import { PaxPairing } from '../Graphics';
 import ThemeSwitcher from '../ThemeSwitcher';
 import ResizableSquare from './ResizableSquare';
 
@@ -17,7 +17,7 @@ export const NoSelectedDevice = () => {
         vertical
       >
         <Row>
-          <PaxPairingSvg />
+          <PaxPairing />
         </Row>
         <Row>
           <AddDeviceFooter />

@@ -3,9 +3,9 @@ import { useThemeContext } from '@/state/hooks';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { Col, Drawer, Modal, Row } from 'antd';
 
-import AddDeviceFooter from './AddDeviceFooter';
+import AddDeviceFooter from '../AddDeviceFooter';
+import { PaxPairing } from '../Graphics';
 import DeviceCard from './DeviceCard';
-import PaxPairingSvg from './PaxPairingSvg';
 
 const DevicesModal = () => {
   const {
@@ -34,7 +34,7 @@ const DevicesModal = () => {
         align="middle"
         style={{ minHeight: '155px' }}
       >
-        {deviceStore.store.length === 0 ? <PaxPairingSvg /> : renderCards()}
+        {deviceStore.store.length === 0 ? <PaxPairing /> : renderCards()}
       </Row>
     );
   };

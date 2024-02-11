@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 interface PulsatingLightProps {
   radius?: string;
+  color: string;
 }
 
-const PulsatingLight = ({ radius }: PulsatingLightProps) => {
+const PulsatingLight = ({ radius, color }: PulsatingLightProps) => {
   const [isBloomed, setIsBloomed] = useState(false);
-  const color = '#00bcd4';
   useEffect(() => {
     const interval = setInterval(() => {
       setIsBloomed(prevState => !prevState);
@@ -23,12 +23,32 @@ const PulsatingLight = ({ radius }: PulsatingLightProps) => {
     transition: 'box-shadow 1s ease-in-out',
   };
 
+  const buildCircle = (x: string, y: string) => {
+    return (
+      <div
+        style={{
+          ...animationStyle,
+          position: 'absolute',
+          left: x,
+          top: y,
+          transform: 'translate(-50%, -50%)',
+        }}
+      ></div>
+    );
+  };
+
   return (
-    <div style={{ position: 'relative' }}>
-      <div style={{ ...animationStyle, position: 'absolute', top: -5 }}></div>
-      <div style={{ ...animationStyle, position: 'absolute', top: 5 }}></div>
-      <div style={{ ...animationStyle, position: 'absolute', left: 5 }}></div>
-      <div style={{ ...animationStyle, position: 'absolute', left: -5 }}></div>
+    <div
+      style={{
+        position: 'relative',
+        width: '50px',
+        height: '50px',
+      }}
+    >
+      {buildCircle('60%', '50%')}
+      {buildCircle('40%', '50%')}
+      {buildCircle('50%', '60%')}
+      {buildCircle('50%', '40%')}
     </div>
   );
 };
