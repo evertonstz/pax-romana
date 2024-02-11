@@ -1,11 +1,13 @@
 import { useDevicesLocalStorage } from '@/hooks';
 import { Pax } from '@/pax';
+import { useThemeContext } from '@/state/hooks';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { Button, Col, Drawer, Input, Modal, Row, Select, Space } from 'antd';
 import { useState } from 'react';
 
 import DeviceCard from './DeviceCard';
 import NoDevices from './NoDevices';
+import { SUPPORTED_DEVICES } from './constants';
 
 const SERIAL_SIZE = 8;
 const INPUT_PLACEHOLDER = `Insert device's ${SERIAL_SIZE} digit serial`;
@@ -16,21 +18,12 @@ const buildOptions = (devices: Pax.lib.Devices[]) => {
   });
 };
 
-interface DevicesModalProps {
-  open: boolean;
-  devices: Pax.lib.Devices[];
-  defaultDevice: Pax.lib.Devices;
-  onCancel?: (
-    e: React.MouseEvent<Element, MouseEvent> | React.KeyboardEvent<Element>,
-  ) => void;
-}
-
-const DevicesModal = ({
-  open,
-  devices,
-  defaultDevice,
-  onCancel,
-}: DevicesModalProps) => {
+const DevicesModal = () => {
+  const defaultDevice = SUPPORTED_DEVICES[0];
+  const {
+    state: { isDeviceModalOpen },
+    actions: { openDevicesModal },
+  } = useThemeContext();
   const { width } = useWindowSize();
   const isSmallScreen = !width ? false : width < 550;
   const deviceStore = useDevicesLocalStorage();
@@ -87,7 +80,7 @@ const DevicesModal = ({
         <Space.Compact style={{ width: '100%' }}>
           <Select
             defaultValue={defaultDevice}
-            options={buildOptions(devices)}
+            options={buildOptions(SUPPORTED_DEVICES)}
             onChange={value => {
               setSelectedDevice(value);
             }}
@@ -119,8 +112,8 @@ const DevicesModal = ({
       <Drawer
         title={'Your Pax Romana devices'}
         height={'100vh'}
-        open={open}
-        onClose={onCancel}
+        open={isDeviceModalOpen}
+        onClose={() => openDevicesModal(false)}
         placement="bottom"
         footer={renderFooter()}
       >
@@ -131,10 +124,10 @@ const DevicesModal = ({
 
   return (
     <Modal
-      open={open}
+      open={isDeviceModalOpen}
       footer={renderFooter()}
       title={'Your Pax Romana devices'}
-      onCancel={onCancel}
+      onCancel={() => openDevicesModal(false)}
     >
       {renderContent()}
     </Modal>

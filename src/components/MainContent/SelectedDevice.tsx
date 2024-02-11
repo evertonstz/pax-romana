@@ -3,24 +3,25 @@ import { usePaxBluetoothServices } from '@/hooks';
 import { BaseBluetoothException } 
         from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
 import { Pax } from '@/pax';
-import { usePaxContext } from '@/state/hooks';
+import { usePaxContext, useThemeContext } from '@/state/hooks';
 import { Button, Flex, Row, Typography } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import DevicesModal from '../DevicesModal';
 import HeaterStatus from '../HeaterStatus';
 import TemperatureProgress from '../TemperatureProgress';
 import ThemeSwitcher from '../ThemeSwitcher';
 import ResizableSquare from './ResizableSquare';
-import { SUPPORTED_DEVICES } from './constants';
 
 interface SelectedDeviceProps {
   currentDevice: Pax.lib.PaxSerial;
 }
 
 export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { state, actions } = usePaxContext();
+  const {
+    actions: { openDevicesModal },
+  } = useThemeContext();
   const bluetoothState = usePaxBluetoothServices(currentDevice);
 
   const messagesConsumer = useCallback(() => {
@@ -71,12 +72,7 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
 
   return (
     <>
-      <DevicesModal
-        open={isModalOpen}
-        devices={SUPPORTED_DEVICES}
-        defaultDevice={SUPPORTED_DEVICES[0]}
-        onCancel={() => setIsModalOpen(false)}
-      ></DevicesModal>
+      <DevicesModal></DevicesModal>
       <ResizableSquare>
         <Flex
           style={{ height: '70%' }}
@@ -99,7 +95,7 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
             Current Device: {!currentDevice ? '' : currentDevice.serial}
           </Typography.Text>
           <Row>
-            <Button type="primary" onClick={() => setIsModalOpen(true)}>
+            <Button type="primary" onClick={() => openDevicesModal(true)}>
               Devices
             </Button>
             <Button
