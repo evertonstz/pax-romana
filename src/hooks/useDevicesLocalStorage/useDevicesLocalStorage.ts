@@ -1,7 +1,7 @@
+import { Pax } from '@/pax';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useCallback, useEffect } from 'react';
 
-import { Pax } from '../../pax';
 import useCurrentDevice from './useCurrentDevice';
 
 export const useDevicesLocalStorage = () => {

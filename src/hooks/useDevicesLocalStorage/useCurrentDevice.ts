@@ -1,6 +1,5 @@
+import { Pax } from '@/pax';
 import { useLocalStorage } from '@uidotdev/usehooks';
-
-import { Pax } from '../../pax';
 
 const CURRENT_DEVICE_STORE_NAME = 'currentDevice';
 

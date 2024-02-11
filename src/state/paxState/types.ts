@@ -1,4 +1,4 @@
-import { Pax } from '../../pax';
+import { Pax } from '@/pax';
 
 export interface PaxState {
   actualTemperature: number;

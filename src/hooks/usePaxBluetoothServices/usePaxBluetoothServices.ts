@@ -1,6 +1,6 @@
+import { Pax } from '@/pax';
 import { useCallback } from 'react';
 
-import { Pax } from '../../pax';
 import { PaxBluetoothCharacteristics } from './enums/PaxBluetoothCharacteristics';
 import { PaxBluetoothServices } from './enums/PaxBluetoothServices';
 import useBluetooth from './useBluetooth';
