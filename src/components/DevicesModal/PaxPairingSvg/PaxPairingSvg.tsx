@@ -3,7 +3,7 @@ import PaxIcon from '@/assets/svg/pax-device.svg?react';
 
 import PulsatingLight from './PulsatingLight';
 
-const NoDevices = () => {
+const PaxPairingSvg = () => {
   return (
     <div
       style={{
@@ -26,4 +26,4 @@ const NoDevices = () => {
   );
 };
 
-export default NoDevices;
+export default PaxPairingSvg;

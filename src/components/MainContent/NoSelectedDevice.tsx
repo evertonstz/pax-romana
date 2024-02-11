@@ -1,16 +1,28 @@
-import DevicesModal from '../DevicesModal';
+import { Flex, Row } from 'antd';
+
+import AddDeviceFooter from '../DevicesModal/AddDeviceFooter';
+import PaxPairingSvg from '../DevicesModal/PaxPairingSvg';
+import ThemeSwitcher from '../ThemeSwitcher';
 import ResizableSquare from './ResizableSquare';
-import { SUPPORTED_DEVICES } from './constants';
 
 export const NoSelectedDevice = () => {
   return (
-    <>
-      <DevicesModal
-        open={true}
-        devices={SUPPORTED_DEVICES}
-        defaultDevice={SUPPORTED_DEVICES[0]}
-      ></DevicesModal>
-      <ResizableSquare>{null}</ResizableSquare>
-    </>
+    <ResizableSquare>
+      <ThemeSwitcher />
+      <Flex
+        style={{ height: '70%' }}
+        justify="center"
+        align="center"
+        gap="middle"
+        vertical
+      >
+        <Row>
+          <PaxPairingSvg />
+        </Row>
+        <Row>
+          <AddDeviceFooter />
+        </Row>
+      </Flex>
+    </ResizableSquare>
   );
 };

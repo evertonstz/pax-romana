@@ -7,7 +7,6 @@ import { usePaxContext, useThemeContext } from '@/state/hooks';
 import { Button, Flex, Row, Typography } from 'antd';
 import { useCallback, useEffect } from 'react';
 
-import DevicesModal from '../DevicesModal';
 import HeaterStatus from '../HeaterStatus';
 import TemperatureProgress from '../TemperatureProgress';
 import ThemeSwitcher from '../ThemeSwitcher';
@@ -72,7 +71,6 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
 
   return (
     <>
-      <DevicesModal></DevicesModal>
       <ResizableSquare>
         <Flex
           style={{ height: '70%' }}

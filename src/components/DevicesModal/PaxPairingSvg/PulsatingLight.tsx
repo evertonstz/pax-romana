@@ -10,7 +10,7 @@ const PulsatingLight = ({ radius }: PulsatingLightProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIsBloomed(prevState => !prevState);
-    }, 1000); // Change the duration as needed
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -19,8 +19,8 @@ const PulsatingLight = ({ radius }: PulsatingLightProps) => {
     height: radius ? radius : '100px',
     borderRadius: '50%',
     backgroundColor: color,
-    boxShadow: isBloomed ? `0 0 50px 10px ${color}` : 'none', // Modify the values as needed
-    transition: 'box-shadow 1s ease-in-out', // Adjust the duration and timing function as needed
+    boxShadow: isBloomed ? `0 0 50px 10px ${color}` : 'none',
+    transition: 'box-shadow 1s ease-in-out',
   };
 
   return (
