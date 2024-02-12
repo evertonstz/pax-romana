@@ -6,8 +6,8 @@ import { Button, Flex, Row, Typography } from 'antd';
 import { useCallback, useEffect } from 'react';
 
 import HeaterStatus from '../HeaterStatus';
-import SettingsButton from '../Settings';
 import TemperatureProgress from '../TemperatureProgress';
+import SettingsButton from '../Theme';
 
 interface SelectedDeviceProps {
   currentDevice: Pax.lib.PaxSerial;

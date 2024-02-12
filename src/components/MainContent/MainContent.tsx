@@ -1,10 +1,10 @@
 import { useDevicesLocalStorage } from '@/hooks';
 import { Pax } from '@/pax';
-import { Row } from 'antd';
+import { Col, Row } from 'antd';
 import { useState } from 'react';
 
 import DevicesModal from '../DevicesModal';
-import SettingsButton from '../Settings';
+import SettingsButton from '../Theme';
 import { NoSelectedDevice } from './NoSelectedDevice';
 import ResizableSquare from './ResizableSquare';
 import { SelectedDevice } from './SelectedDevice';
@@ -28,8 +28,10 @@ const MainContent = () => {
 
   const renderSettingsButton = () => {
     return (
-      <Row style={{ margin: '10px' }}>
-        <SettingsButton />
+      <Row justify="end" style={{ margin: '10px' }}>
+        <Col>
+          <SettingsButton />
+        </Col>
       </Row>
     );
   };
