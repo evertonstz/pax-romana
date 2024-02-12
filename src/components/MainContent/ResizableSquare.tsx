@@ -3,10 +3,11 @@ import { theme } from 'antd';
 import { ReactNode, useEffect, useState } from 'react';
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
+  header?: ReactNode;
 }
 
-const ResizableSquare = ({ children }: Props) => {
+const ResizableSquare = ({ children, header }: Props) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const { token } = theme.useToken();
   const { width, height } = useWindowSize();
@@ -21,12 +22,23 @@ const ResizableSquare = ({ children }: Props) => {
     width: isFullScreen ? '100%' : '600px',
     height: isFullScreen ? '100%' : '600px',
     backgroundColor: token.colorBgContainer,
-    border: isFullScreen ? '' : `2px solid ${token.colorBorder}`,
-    borderRadius: isFullScreen ? '0%' : token.borderRadiusLG,
+    border: isFullScreen ? '' : `1px solid ${token.colorBorder}`,
+    borderRadius: isFullScreen ? '0%' : '25px',
     boxShadow: isFullScreen ? '' : token.boxShadow,
   };
 
-  return <div style={squareStyles}>{children}</div>;
+  const headerStyles = {
+    fontSize: '1.5em',
+    fontWeight: 'bold',
+    marginBottom: '1em',
+  };
+
+  return (
+    <div style={squareStyles}>
+      <div style={headerStyles}>{header}</div>
+      {children}
+    </div>
+  );
 };
 
 export default ResizableSquare;

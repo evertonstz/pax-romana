@@ -1,4 +1,4 @@
-import { ThemeColor } from './types';
+import { ThemeColor } from '@/types';
 
 export interface ThemeActions {
   type: 'SET_THEME';

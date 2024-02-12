@@ -1,3 +1,4 @@
+import { ThemeColor } from '@/types';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import React, {
   Dispatch,
@@ -9,7 +10,7 @@ import React, {
 
 import { ThemeActions } from './themeState/actions';
 import reducer, { initialState } from './themeState/reducer';
-import { ThemeColor, ThemeState } from './themeState/types';
+import { ThemeState } from './themeState/types';
 
 const LOCAL_STORAGE_THEME_NAME = 'appTheme';
 

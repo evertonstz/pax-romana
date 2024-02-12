@@ -1,9 +1,9 @@
 import { useThemeContext } from '@/state/hooks';
-import { ThemeColor } from '@/state/themeState/types';
 import { ConfigProvider, theme } from 'antd';
 
 import { PageLayout } from './Layout';
 import MainContent from './components/MainContent';
+import { ThemeColor } from './types';
 
 const getTheme = (color: ThemeColor) => {
   if (color === 'light') return theme.defaultAlgorithm;
