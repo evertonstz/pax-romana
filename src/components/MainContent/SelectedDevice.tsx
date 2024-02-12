@@ -7,7 +7,8 @@ import { Button, Flex, Row, Typography } from 'antd';
 import { useCallback, useEffect } from 'react';
 
 import HeaterStatus from '../HeaterStatus';
-import ThemeSwitcher from '../SettingsModal/ThemeSwitcher';
+import SettingsButton from '../Settings';
+import ThemeSwitcher from '../Settings/ThemeSwitcher';
 import TemperatureProgress from '../TemperatureProgress';
 import ResizableSquare from './ResizableSquare';
 
@@ -105,6 +106,7 @@ export const SelectedDevice = ({
             >
               {bluetoothState.connected ? 'Disconnect' : 'Connect'}
             </Button>
+            <SettingsButton />
           </Row>
         </Flex>
       </ResizableSquare>
