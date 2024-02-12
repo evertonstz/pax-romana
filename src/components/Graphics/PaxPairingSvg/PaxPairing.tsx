@@ -11,7 +11,7 @@ const PaxPairing = () => {
   const { token } = theme.useToken();
 
   const svgFillColor = token.colorIcon;
-  const lightColor = color === 'light' ? '#fff' : '#000';
+  const lightColor = color === 'light' ? '#87CEEB' : '#00FFFF';
 
   return (
     <div

@@ -1,5 +1,5 @@
 import { useThemeContext } from '@/state/hooks';
-import { MoonFilled } from '@ant-design/icons';
+import { FormatPainterFilled } from '@ant-design/icons';
 import { Button, Dropdown, MenuProps, Tooltip } from 'antd';
 
 const ThemeDropdownButton = () => {
@@ -57,7 +57,11 @@ const ThemeDropdownButton = () => {
       >
         <a onClick={e => e.preventDefault()}>
           <Tooltip title="Settings">
-            <Button type="default" shape="circle" icon={<MoonFilled />} />
+            <Button
+              type="default"
+              shape="circle"
+              icon={<FormatPainterFilled />}
+            />
           </Tooltip>
         </a>
       </Dropdown>
