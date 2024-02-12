@@ -1,4 +1,5 @@
-import { Button } from 'antd';
+import { ToolFilled } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
 import { useState } from 'react';
 
 import SettingsModal from './SettingsModal';
@@ -8,9 +9,14 @@ const SettingsButton = () => {
   return (
     <>
       <SettingsModal open={open} onClose={() => setOpen(false)} />
-      <Button type="primary" onClick={() => setOpen(true)}>
-        Settings
-      </Button>
+      <Tooltip title="Settings">
+        <Button
+          type="primary"
+          shape="circle"
+          icon={<ToolFilled />}
+          onClick={() => setOpen(true)}
+        />
+      </Tooltip>
     </>
   );
 };

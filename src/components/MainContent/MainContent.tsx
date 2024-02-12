@@ -1,9 +1,12 @@
 import { useDevicesLocalStorage } from '@/hooks';
 import { Pax } from '@/pax';
+import { Row } from 'antd';
 import { useState } from 'react';
 
 import DevicesModal from '../DevicesModal';
+import SettingsButton from '../Settings';
 import { NoSelectedDevice } from './NoSelectedDevice';
+import ResizableSquare from './ResizableSquare';
 import { SelectedDevice } from './SelectedDevice';
 
 const MainContent = () => {
@@ -23,13 +26,23 @@ const MainContent = () => {
     );
   };
 
+  const renderSettingsButton = () => {
+    return (
+      <Row style={{ margin: '10px' }}>
+        <SettingsButton />
+      </Row>
+    );
+  };
+
   return (
     <>
       <DevicesModal
         open={isDeviceModalOpen}
         onClose={() => openDevicesModal(false)}
       />
-      {renderDevicesContent(deviceStore.currentDevice)}
+      <ResizableSquare header={renderSettingsButton()}>
+        {renderDevicesContent(deviceStore.currentDevice)}
+      </ResizableSquare>
     </>
   );
 };

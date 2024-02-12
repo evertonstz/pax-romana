@@ -9,7 +9,7 @@ export interface SettingsModalProps {
 const SettingsModal = ({ open, onClose }: SettingsModalProps) => {
   return (
     <Modal title="Settings" open={open} onCancel={onClose} footer={null}>
-      <ThemeSwitcher />{' '}
+      <ThemeSwitcher />
     </Modal>
   );
 };

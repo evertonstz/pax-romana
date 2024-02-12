@@ -1,5 +1,4 @@
 import { usePaxBluetoothServices } from '@/hooks';
-// eslint-disable-next-line prettier/prettier
 import { BaseBluetoothException } from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
 import { Pax } from '@/pax';
 import { usePaxContext } from '@/state/hooks';
@@ -8,9 +7,7 @@ import { useCallback, useEffect } from 'react';
 
 import HeaterStatus from '../HeaterStatus';
 import SettingsButton from '../Settings';
-import ThemeSwitcher from '../Settings/ThemeSwitcher';
 import TemperatureProgress from '../TemperatureProgress';
-import ResizableSquare from './ResizableSquare';
 
 interface SelectedDeviceProps {
   currentDevice: Pax.lib.PaxSerial;
@@ -72,44 +69,40 @@ export const SelectedDevice = ({
 
   return (
     <>
-      <ResizableSquare>
-        <Flex
-          style={{ height: '70%' }}
-          justify="center"
-          align="center"
-          gap="middle"
-          vertical
-        >
-          <Row>
-            <ThemeSwitcher />
-          </Row>
-          <TemperatureProgress
-            connected={bluetoothState.connected}
-            heaterSetPointTemperature={state.heaterSetPointTemperature}
-            actualTemperature={state.actualTemperature}
-            unit={'C'}
-          />
-          <HeaterStatus heaterStatus={state.heatingSate} />
-          <Typography.Text>
-            Current Device: {!currentDevice ? '' : currentDevice.serial}
-          </Typography.Text>
-          <Row>
-            <Button type="primary" onClick={openDevicesModal}>
-              Devices
-            </Button>
-            <Button
-              onClick={
-                bluetoothState.connected
-                  ? bluetoothState.disconnect
-                  : bluetoothState.connect
-              }
-            >
-              {bluetoothState.connected ? 'Disconnect' : 'Connect'}
-            </Button>
-            <SettingsButton />
-          </Row>
-        </Flex>
-      </ResizableSquare>
+      {' '}
+      <Flex
+        style={{ height: '70%' }}
+        justify="center"
+        align="center"
+        gap="middle"
+        vertical
+      >
+        <TemperatureProgress
+          connected={bluetoothState.connected}
+          heaterSetPointTemperature={state.heaterSetPointTemperature}
+          actualTemperature={state.actualTemperature}
+          unit={'C'}
+        />
+        <HeaterStatus heaterStatus={state.heatingSate} />
+        <Typography.Text>
+          Current Device: {!currentDevice ? '' : currentDevice.serial}
+        </Typography.Text>
+        <Row>
+          <Button type="primary" onClick={openDevicesModal}>
+            Devices
+          </Button>
+          <Button
+            onClick={
+              bluetoothState.connected
+                ? bluetoothState.disconnect
+                : bluetoothState.connect
+            }
+          >
+            {bluetoothState.connected ? 'Disconnect' : 'Connect'}
+          </Button>
+          <SettingsButton />
+        </Row>
+      </Flex>
     </>
   );
 };
