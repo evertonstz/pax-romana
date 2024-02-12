@@ -2,7 +2,7 @@ import { Flex, Row } from 'antd';
 
 import AddDeviceFooter from '../AddDeviceFooter';
 import { PaxPairing } from '../Graphics';
-import ThemeSwitcher from '../ThemeSwitcher';
+import ThemeSwitcher from '../SettingsModal/ThemeSwitcher';
 import ResizableSquare from './ResizableSquare';
 
 export const NoSelectedDevice = () => {

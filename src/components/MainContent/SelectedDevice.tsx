@@ -1,15 +1,14 @@
 import { usePaxBluetoothServices } from '@/hooks';
 // eslint-disable-next-line prettier/prettier
-import { BaseBluetoothException } 
-        from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
+import { BaseBluetoothException } from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
 import { Pax } from '@/pax';
 import { usePaxContext } from '@/state/hooks';
 import { Button, Flex, Row, Typography } from 'antd';
 import { useCallback, useEffect } from 'react';
 
 import HeaterStatus from '../HeaterStatus';
+import ThemeSwitcher from '../SettingsModal/ThemeSwitcher';
 import TemperatureProgress from '../TemperatureProgress';
-import ThemeSwitcher from '../ThemeSwitcher';
 import ResizableSquare from './ResizableSquare';
 
 interface SelectedDeviceProps {

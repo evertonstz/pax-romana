@@ -1,7 +1,7 @@
+import { Modal } from '@/components';
 import { useDevicesLocalStorage } from '@/hooks';
 import { WarningFilled } from '@ant-design/icons';
-import { useWindowSize } from '@uidotdev/usehooks';
-import { Col, Drawer, Modal, Row } from 'antd';
+import { Col, Row } from 'antd';
 
 import AddDeviceFooter from '../AddDeviceFooter';
 import DeviceCard from './DeviceCard';
@@ -12,8 +12,6 @@ export interface DevicesModalProps {
 }
 
 const DevicesModal = ({ open, onClose }: DevicesModalProps) => {
-  const { width } = useWindowSize();
-  const isSmallScreen = !width ? false : width < 550;
   const deviceStore = useDevicesLocalStorage();
 
   const renderCards = () => {
@@ -51,27 +49,12 @@ const DevicesModal = ({ open, onClose }: DevicesModalProps) => {
     );
   };
 
-  if (isSmallScreen) {
-    return (
-      <Drawer
-        title={'Your Pax Romana devices'}
-        height={'100vh'}
-        open={open}
-        onClose={onClose}
-        placement="bottom"
-        footer={renderFooter()}
-      >
-        {renderContent()}
-      </Drawer>
-    );
-  }
-
   return (
     <Modal
-      open={open}
-      footer={renderFooter()}
       title={'Your Pax Romana devices'}
-      onCancel={onClose}
+      open={open}
+      onClose={onClose}
+      footer={renderFooter()}
     >
       {renderContent()}
     </Modal>
