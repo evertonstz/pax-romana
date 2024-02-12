@@ -3,8 +3,8 @@ import { Pax } from '@/pax';
 import { Col, Row } from 'antd';
 import { useState } from 'react';
 
+import { ThemeDropdownButton } from '..';
 import DevicesModal from '../DevicesModal';
-import ThemeDropdownButton from '../ThemeDropdown';
 import { NoSelectedDevice } from './NoSelectedDevice';
 import ResizableSquare from './ResizableSquare';
 import { SelectedDevice } from './SelectedDevice';

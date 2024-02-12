@@ -12,12 +12,16 @@ const items: MenuProps['items'] = [
     key: 'dark',
     label: 'Dark',
   },
+  {
+    key: 'auto',
+    label: 'System',
+  },
 ];
 
 const ThemeDropdownButton = () => {
   const {
-    state: { themeColor },
-    actions: { setPageTheme },
+    state: { mode },
+    actions: { setThemeMode },
   } = useThemeContext();
   return (
     <>
@@ -25,8 +29,8 @@ const ThemeDropdownButton = () => {
         menu={{
           items,
           selectable: true,
-          onClick: ({ key }) => setPageTheme(key as ThemeColor),
-          selectedKeys: [themeColor],
+          onClick: ({ key }) => setThemeMode(key as ThemeColor),
+          selectedKeys: [mode],
         }}
         placement="bottomLeft"
         trigger={['click']}
