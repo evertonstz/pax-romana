@@ -1,8 +1,8 @@
 import { useThemeContext } from '@/state/hooks';
 import { theme } from 'antd';
 
-import Pax3DeviceSvg from './Pax3DeviceSvg';
 import PulsatingLight from './PulsatingLight';
+import Pax3DeviceSvg from './Svg/Pax3DeviceSvg';
 
 const PaxPairing = () => {
   const {
@@ -32,8 +32,9 @@ const PaxPairing = () => {
       </div>
       <Pax3DeviceSvg
         fillColor={svgFillColor}
+        showShadow={themeColor === 'light' ? true : false}
         style={{
-          width: '30%',
+          width: '50%',
         }}
       />
     </div>
