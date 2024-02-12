@@ -22,8 +22,8 @@ const ResizableSquare = ({ children, header }: Props) => {
     width: isFullScreen ? '100%' : '600px',
     height: isFullScreen ? '100%' : '600px',
     backgroundColor: token.colorBgContainer,
-    border: isFullScreen ? '' : `2px solid ${token.colorBorder}`,
-    borderRadius: isFullScreen ? '0%' : token.borderRadiusLG,
+    border: isFullScreen ? '' : `1px solid ${token.colorBorder}`,
+    borderRadius: isFullScreen ? '0%' : '25px',
     boxShadow: isFullScreen ? '' : token.boxShadow,
   };
 
