@@ -6,12 +6,12 @@ import Pax3DeviceSvg from './Svg/Pax3DeviceSvg';
 
 const PaxPairing = () => {
   const {
-    state: { themeColor },
+    state: { color },
   } = useThemeContext();
   const { token } = theme.useToken();
 
   const svgFillColor = token.colorIcon;
-  const lightColor = themeColor === 'light' ? '#fff' : '#000';
+  const lightColor = color === 'light' ? '#fff' : '#000';
 
   return (
     <div
@@ -32,7 +32,7 @@ const PaxPairing = () => {
       </div>
       <Pax3DeviceSvg
         fillColor={svgFillColor}
-        showShadow={themeColor === 'light' ? true : false}
+        showShadow={color === 'light' ? true : false}
         style={{
           width: '50%',
         }}

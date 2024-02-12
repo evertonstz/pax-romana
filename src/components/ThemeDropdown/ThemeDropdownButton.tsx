@@ -1,36 +1,56 @@
 import { useThemeContext } from '@/state/hooks';
-import { ThemeColor } from '@/types';
 import { MoonFilled } from '@ant-design/icons';
 import { Button, Dropdown, MenuProps, Tooltip } from 'antd';
 
-const items: MenuProps['items'] = [
-  {
-    key: 'light',
-    label: 'Light',
-  },
-  {
-    key: 'dark',
-    label: 'Dark',
-  },
-  {
-    key: 'auto',
-    label: 'System',
-  },
-];
-
 const ThemeDropdownButton = () => {
   const {
-    state: { mode },
-    actions: { setThemeMode },
+    state: { mode, color },
+    actions: { setThemeMode, setThemeColor },
   } = useThemeContext();
+
+  const items: MenuProps['items'] = [
+    {
+      key: 'light',
+      label: 'Light',
+      onClick: () => {
+        setThemeMode('manual');
+        setThemeColor('light');
+      },
+    },
+    {
+      key: 'dark',
+      label: 'Dark',
+      onClick: () => {
+        setThemeMode('manual');
+        setThemeColor('dark');
+      },
+    },
+    {
+      key: 'auto',
+      label: 'System',
+      onClick: () => {
+        setThemeMode('auto');
+      },
+    },
+  ];
+
+  const handleSelectMode = () => {
+    if (mode === 'auto') {
+      return 'auto';
+    }
+    if (color === 'light') {
+      return 'light';
+    }
+    return 'dark';
+  };
+
   return (
     <>
       <Dropdown
         menu={{
           items,
           selectable: true,
-          onClick: ({ key }) => setThemeMode(key as ThemeColor),
-          selectedKeys: [mode],
+          selectedKeys: [handleSelectMode()],
         }}
         placement="bottomLeft"
         trigger={['click']}
