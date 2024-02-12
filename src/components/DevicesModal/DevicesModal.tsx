@@ -1,9 +1,9 @@
 import { useDevicesLocalStorage } from '@/hooks';
+import { WarningFilled } from '@ant-design/icons';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { Col, Drawer, Modal, Row } from 'antd';
 
 import AddDeviceFooter from '../AddDeviceFooter';
-import { PaxPairing } from '../Graphics';
 import DeviceCard from './DeviceCard';
 
 export interface DevicesModalProps {
@@ -34,7 +34,11 @@ const DevicesModal = ({ open, onClose }: DevicesModalProps) => {
         align="middle"
         style={{ minHeight: '155px' }}
       >
-        {deviceStore.store.length === 0 ? <PaxPairing /> : renderCards()}
+        {deviceStore.store.length === 0 ? (
+          <WarningFilled style={{ fontSize: '64px', opacity: 0.3 }} />
+        ) : (
+          renderCards()
+        )}
       </Row>
     );
   };
