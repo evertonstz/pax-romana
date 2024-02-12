@@ -7,14 +7,10 @@ import React, {
   useState,
 } from 'react';
 
+import { initialState } from './themeState/constants';
 import { ThemeState } from './themeState/types';
 
 const LOCAL_STORAGE_THEME_NAME = 'appTheme';
-
-export const initialState: ThemeState = {
-  color: 'light',
-  mode: 'auto',
-};
 
 export interface ThemeContextProps {
   state: ThemeState;
