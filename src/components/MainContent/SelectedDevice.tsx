@@ -7,7 +7,6 @@ import { useCallback, useEffect } from 'react';
 
 import HeaterStatus from '../HeaterStatus';
 import TemperatureProgress from '../TemperatureProgress';
-import SettingsButton from '../Theme';
 
 interface SelectedDeviceProps {
   currentDevice: Pax.lib.PaxSerial;
@@ -69,7 +68,6 @@ export const SelectedDevice = ({
 
   return (
     <>
-      {' '}
       <Flex
         style={{ height: '70%' }}
         justify="center"
@@ -100,7 +98,6 @@ export const SelectedDevice = ({
           >
             {bluetoothState.connected ? 'Disconnect' : 'Connect'}
           </Button>
-          <SettingsButton />
         </Row>
       </Flex>
     </>

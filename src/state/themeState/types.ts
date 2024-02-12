@@ -1,5 +1,6 @@
-import { ThemeColor } from '@/types';
+import { ThemeColor, ThemeMode } from '@/types';
 
 export interface ThemeState {
-  themeColor: ThemeColor;
+  color: ThemeColor;
+  mode: ThemeMode;
 }

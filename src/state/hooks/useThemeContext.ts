@@ -14,5 +14,5 @@ export const useThemeContext = (): ThemeContextHookType => {
   if (!context) {
     throw new Error('useThemeContext must be used within an ThemeProvider');
   }
-  return { state: context.state, actions: buildActions(context.dispatch) };
+  return { state: context.state, actions: buildActions(context.setter) };
 };

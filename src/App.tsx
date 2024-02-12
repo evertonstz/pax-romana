@@ -11,10 +11,12 @@ const getTheme = (color: ThemeColor) => {
 };
 
 function App() {
-  const { state: themeState } = useThemeContext();
+  const {
+    state: { color },
+  } = useThemeContext();
 
   return (
-    <ConfigProvider theme={{ algorithm: getTheme(themeState.themeColor) }}>
+    <ConfigProvider theme={{ algorithm: getTheme(color) }}>
       <PageLayout>
         <MainContent />
       </PageLayout>

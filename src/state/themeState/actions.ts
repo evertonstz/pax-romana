@@ -1,24 +1,35 @@
-import { ThemeColor } from '@/types';
+import { ThemeColor, ThemeMode } from '@/types';
 
-export interface ThemeActions {
-  type: 'SET_THEME';
-  payload: ThemeColor;
-}
+import { ThemeState } from './types';
+
 export interface BuiltThemeActions {
-  setPageTheme: (theme: ThemeColor) => void;
+  setThemeColor: (theme: ThemeColor) => void;
+  setThemeMode: (mode: ThemeMode) => void;
 }
 
-const setPageTheme = (
-  dispatch: React.Dispatch<ThemeActions>,
-  theme: ThemeColor,
+const setThemeColor = (
+  setter: React.Dispatch<React.SetStateAction<ThemeState>>,
+  color: ThemeColor,
 ) => {
-  dispatch({ type: 'SET_THEME', payload: theme });
+  setter(prev => {
+    return { ...prev, color };
+  });
+};
+
+const setThemeMode = (
+  setter: React.Dispatch<React.SetStateAction<ThemeState>>,
+  mode: ThemeMode,
+) => {
+  setter(prev => {
+    return { ...prev, mode };
+  });
 };
 
 export const buildActions = (
-  dispatch: React.Dispatch<ThemeActions>,
+  setter: React.Dispatch<React.SetStateAction<ThemeState>>,
 ): BuiltThemeActions => {
   return {
-    setPageTheme: (theme: ThemeColor) => setPageTheme(dispatch, theme),
+    setThemeColor: (theme: ThemeColor) => setThemeColor(setter, theme),
+    setThemeMode: (mode: ThemeMode) => setThemeMode(setter, mode),
   };
 };

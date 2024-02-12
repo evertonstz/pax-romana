@@ -3,8 +3,8 @@ import { Pax } from '@/pax';
 import { Col, Row } from 'antd';
 import { useState } from 'react';
 
+import { ThemeDropdownButton } from '..';
 import DevicesModal from '../DevicesModal';
-import SettingsButton from '../Theme';
 import { NoSelectedDevice } from './NoSelectedDevice';
 import ResizableSquare from './ResizableSquare';
 import { SelectedDevice } from './SelectedDevice';
@@ -30,7 +30,7 @@ const MainContent = () => {
     return (
       <Row justify="end" style={{ margin: '10px' }}>
         <Col>
-          <SettingsButton />
+          <ThemeDropdownButton />
         </Col>
       </Row>
     );
