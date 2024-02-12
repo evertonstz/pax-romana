@@ -4,12 +4,11 @@ export interface ThemeActions {
   type: 'SET_THEME';
   payload: ThemeColor;
 }
-
 export interface BuiltThemeActions {
   setPageTheme: (theme: ThemeColor) => void;
 }
 
-export const setPageTheme = (
+const setPageTheme = (
   dispatch: React.Dispatch<ThemeActions>,
   theme: ThemeColor,
 ) => {

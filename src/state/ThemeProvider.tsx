@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 import { ThemeActions } from './themeState/actions';
-import reducer from './themeState/reducer';
+import reducer, { initialState } from './themeState/reducer';
 import { ThemeColor, ThemeState } from './themeState/types';
 
 const LOCAL_STORAGE_THEME_NAME = 'appTheme';
@@ -29,7 +29,9 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
     LOCAL_STORAGE_THEME_NAME,
     'light',
   );
+
   const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
     themeColor: localThemeColor,
   });
 

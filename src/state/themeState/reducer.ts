@@ -1,6 +1,10 @@
 import { ThemeActions } from './actions';
 import { ThemeState } from './types';
 
+export const initialState: ThemeState = {
+  themeColor: 'light',
+};
+
 const reducer = (state: ThemeState, action: ThemeActions): ThemeState => {
   switch (action.type) {
     case 'SET_THEME':
