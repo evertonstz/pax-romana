@@ -4,7 +4,7 @@ import { Col, Row } from 'antd';
 import { useState } from 'react';
 
 import DevicesModal from '../DevicesModal';
-import SettingsButton from '../Theme';
+import ThemeDropdownButton from '../ThemeDropdown';
 import { NoSelectedDevice } from './NoSelectedDevice';
 import ResizableSquare from './ResizableSquare';
 import { SelectedDevice } from './SelectedDevice';
@@ -30,7 +30,7 @@ const MainContent = () => {
     return (
       <Row justify="end" style={{ margin: '10px' }}>
         <Col>
-          <SettingsButton />
+          <ThemeDropdownButton />
         </Col>
       </Row>
     );

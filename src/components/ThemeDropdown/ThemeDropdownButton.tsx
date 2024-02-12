@@ -14,7 +14,7 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const ThemeButton = () => {
+const ThemeDropdownButton = () => {
   const {
     state: { themeColor },
     actions: { setPageTheme },
@@ -41,4 +41,4 @@ const ThemeButton = () => {
   );
 };
 
-export default ThemeButton;
+export default ThemeDropdownButton;
