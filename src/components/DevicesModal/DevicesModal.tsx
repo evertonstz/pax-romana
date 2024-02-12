@@ -1,5 +1,4 @@
 import { useDevicesLocalStorage } from '@/hooks';
-import { useThemeContext } from '@/state/hooks';
 import { useWindowSize } from '@uidotdev/usehooks';
 import { Col, Drawer, Modal, Row } from 'antd';
 
@@ -7,11 +6,12 @@ import AddDeviceFooter from '../AddDeviceFooter';
 import { PaxPairing } from '../Graphics';
 import DeviceCard from './DeviceCard';
 
-const DevicesModal = () => {
-  const {
-    state: { isDeviceModalOpen },
-    actions: { openDevicesModal },
-  } = useThemeContext();
+export interface DevicesModalProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+const DevicesModal = ({ open, onClose }: DevicesModalProps) => {
   const { width } = useWindowSize();
   const isSmallScreen = !width ? false : width < 550;
   const deviceStore = useDevicesLocalStorage();
@@ -52,8 +52,8 @@ const DevicesModal = () => {
       <Drawer
         title={'Your Pax Romana devices'}
         height={'100vh'}
-        open={isDeviceModalOpen}
-        onClose={() => openDevicesModal(false)}
+        open={open}
+        onClose={onClose}
         placement="bottom"
         footer={renderFooter()}
       >
@@ -64,10 +64,10 @@ const DevicesModal = () => {
 
   return (
     <Modal
-      open={isDeviceModalOpen}
+      open={open}
       footer={renderFooter()}
       title={'Your Pax Romana devices'}
-      onCancel={() => openDevicesModal(false)}
+      onCancel={onClose}
     >
       {renderContent()}
     </Modal>

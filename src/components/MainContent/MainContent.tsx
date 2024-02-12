@@ -1,11 +1,13 @@
 import { useDevicesLocalStorage } from '@/hooks';
 import { Pax } from '@/pax';
+import { useState } from 'react';
 
 import DevicesModal from '../DevicesModal';
 import { NoSelectedDevice } from './NoSelectedDevice';
 import { SelectedDevice } from './SelectedDevice';
 
 const MainContent = () => {
+  const [isDeviceModalOpen, openDevicesModal] = useState(false);
   const deviceStore = useDevicesLocalStorage();
 
   const renderDevicesContent = (
@@ -14,13 +16,19 @@ const MainContent = () => {
     return !currentDevice ? (
       <NoSelectedDevice />
     ) : (
-      <SelectedDevice currentDevice={currentDevice} />
+      <SelectedDevice
+        currentDevice={currentDevice}
+        openDevicesModal={() => openDevicesModal(true)}
+      />
     );
   };
 
   return (
     <>
-      <DevicesModal />
+      <DevicesModal
+        open={isDeviceModalOpen}
+        onClose={() => openDevicesModal(false)}
+      />
       {renderDevicesContent(deviceStore.currentDevice)}
     </>
   );
