@@ -12,4 +12,5 @@ export abstract class PaxAbs {
   }
 
   abstract decrypt(packet: PaxEncryptedPacket): PaxDecryptedPacket;
+  abstract encrypt(packet: PaxDecryptedPacket): PaxEncryptedPacket;
 }

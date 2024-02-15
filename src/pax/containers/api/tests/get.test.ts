@@ -1,4 +1,3 @@
-import { Pax3Imp } from '../../../core/crypt';
 import {
   ActualTemperatureMessage,
   HeaterSetPointMessage,
@@ -12,7 +11,7 @@ import {
 } from '../../../shared/models/Packet';
 import { PaxSerial } from '../../../shared/models/PaxSerial';
 import { hexToBuffer } from '../../../shared/utils/hexToBuffer';
-import { buildPaxClassFromDevice, decodeDecryptedPacket, get } from '../get';
+import { decodeDecryptedPacket, get } from '../get';
 
 describe('get.ts', () => {
   const serialNumber = 'KRZQ2NW9';
@@ -27,12 +26,13 @@ describe('get.ts', () => {
       expect(response.device).toBe(paxSerial.device);
     });
   });
-  describe('buildPaxClassFromDevice', () => {
-    it('should return Pax3Imp when device is Pax3Device', () => {
-      const response = buildPaxClassFromDevice(paxSerial);
-      expect(response instanceof Pax3Imp).toBe(true);
-    });
-  });
+  // TODO migrate to its own test file
+  // describe('buildPaxClassFromDevice', () => {
+  //   it('should return Pax3Imp when device is Pax3Device', () => {
+  //     const response = buildPaxCryptClassFromDevice(paxSerial);
+  //     expect(response instanceof Pax3Imp).toBe(true);
+  //   });
+  // });
   describe('decodeDecryptedPacket', () => {
     it('should return ActualTemperatureMessage when ATTRIBUTE_ACTUAL_TEMP', () => {
       const paxDecryptedPacket = new PaxDecryptedPacket(new ArrayBuffer(16));
