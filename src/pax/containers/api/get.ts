@@ -1,4 +1,3 @@
-import { PaxCrypt } from '../../core';
 import {
   ActualTemperatureMessage,
   HeaterSetPointMessage,
@@ -7,9 +6,7 @@ import {
   TargetTemperatureMessage,
 } from '../../core/messages';
 import { UnknownMessage } from '../../core/messages/UnknownMessage';
-import { Devices } from '../../shared/enums';
 import { Messages } from '../../shared/enums/Messages';
-import { UnknownDeviceException } from '../../shared/exceptions';
 import {
   PaxDecryptedPacket,
   PaxEncryptedPacket,
@@ -17,17 +14,7 @@ import {
 import { PaxSerial } from '../../shared/models/PaxSerial';
 import { getEnumKeyByEnumValue } from '../../shared/utils/getEnumKeyByEnumValue';
 import { GetResponse } from './models/getResponse';
-
-export const buildPaxClassFromDevice = (
-  paxSerial: PaxSerial,
-): PaxCrypt.PaxAbs => {
-  switch (paxSerial.device) {
-    case Devices.PAX3:
-      return new PaxCrypt.Pax3Imp(paxSerial);
-    default:
-      throw new UnknownDeviceException();
-  }
-};
+import { buildPaxCryptClassFromDevice } from './utils/buildPaxCryptClassFromDevice';
 
 export const decodeDecryptedPacket = (
   messageType: Messages,
@@ -39,7 +26,7 @@ export const decodeDecryptedPacket = (
     case Messages.ATTRIBUTE_CURRENT_TARGET_TEMP:
       return new TargetTemperatureMessage(packet);
     case Messages.ATTRIBUTE_HEATER_SET_POINT:
-      return new HeaterSetPointMessage(packet);
+      return HeaterSetPointMessage.createWithPacket(packet);
     case Messages.ATTRIBUTE_HEATING_STATE:
       return new HeatingStateMessage(packet);
     default:
@@ -51,7 +38,7 @@ export const get = (
   packet: PaxEncryptedPacket,
   paxSerial: PaxSerial,
 ): GetResponse => {
-  const paxClass = buildPaxClassFromDevice(paxSerial);
+  const paxClass = buildPaxCryptClassFromDevice(paxSerial);
   const decryptedPacket = paxClass.decrypt(packet);
   const messageTypeInt = decryptedPacket.getUint8(0);
   const messageType = getEnumKeyByEnumValue(Messages, messageTypeInt);
