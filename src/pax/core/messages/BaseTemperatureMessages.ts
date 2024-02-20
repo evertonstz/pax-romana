@@ -52,6 +52,8 @@ export abstract class ReadAndWriteTemperatureMessage
       this.temperature = builder.getTemperature();
       const buffer = new ArrayBuffer(16);
       const view = new PaxDecryptedPacket(buffer);
+      // sets message type and message content
+      view.setUint8(0, this.messageType);
       view.setUint16(1, Math.round(this.temperature * 10), true);
       this.packet = view;
     } else {

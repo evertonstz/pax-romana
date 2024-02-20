@@ -14,6 +14,7 @@ export interface UsePaxBluetoothServicesState {
     isListenerAdded: boolean;
   };
   readFromMainService: () => Promise<Pax.lib.messages.MessageAbs>;
+  writeToMainService: (message: Pax.lib.PaxEncryptedPacket) => Promise<void>;
 }
 
 export const usePaxBluetoothServices = (
@@ -26,6 +27,7 @@ export const usePaxBluetoothServices = (
     isListenerAdded,
     readFromCharacteristic,
     addCharacteristicListener,
+    writeToCharacteristic,
   } = useBluetooth(
     serial.device,
     PaxBluetoothServices.MainService,
@@ -49,7 +51,7 @@ export const usePaxBluetoothServices = (
     useCallback(async (): Promise<Pax.lib.messages.MessageAbs> => {
       return readFromCharacteristic(
         PaxBluetoothServices.MainService,
-        PaxBluetoothCharacteristics.ReadAndWrite,
+        PaxBluetoothCharacteristics.Read,
       ).then(response => {
         const decodedMessage = Pax.api.get(
           new Pax.lib.PaxEncryptedPacket(response.buffer),
@@ -58,6 +60,17 @@ export const usePaxBluetoothServices = (
         return decodedMessage.message;
       });
     }, [readFromCharacteristic, serial]);
+
+  const writeToMainService = useCallback(
+    async (packet: Pax.lib.PaxEncryptedPacket): Promise<void> => {
+      return writeToCharacteristic(
+        PaxBluetoothServices.MainService,
+        PaxBluetoothCharacteristics.Write,
+        packet,
+      );
+    },
+    [writeToCharacteristic],
+  );
 
   return {
     connect,
@@ -68,5 +81,6 @@ export const usePaxBluetoothServices = (
       isListenerAdded,
     },
     readFromMainService,
+    writeToMainService,
   };
 };

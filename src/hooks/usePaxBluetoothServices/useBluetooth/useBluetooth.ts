@@ -29,6 +29,11 @@ export interface BluetoothHookState {
     serviceUUID: string,
     characteristicUUID: string,
   ) => Promise<DataView>;
+  writeToCharacteristic: (
+    serviceUUID: string,
+    characteristicUUID: string,
+    value: DataView,
+  ) => Promise<void>;
 }
 
 const parseErrors = (error: unknown): void => {
@@ -143,6 +148,29 @@ const useBluetooth = (
     [connected, server],
   );
 
+  const writeToCharacteristic = useCallback(
+    async (
+      serviceUUID: string,
+      characteristicUUID: string,
+      value: DataView,
+    ): Promise<void> => {
+      if (!connected || !server) throw new Error('Device is not connected');
+
+      try {
+        const service = await server.getPrimaryService(serviceUUID);
+        const characteristic =
+          await service.getCharacteristic(characteristicUUID);
+        // use writeValueWithoutResponse instead
+        await characteristic.writeValueWithoutResponse(value.buffer);
+        // await characteristic.writeValue(value);
+      } catch (error) {
+        parseErrors(error);
+        throw new BluetoothUnknownException(String(error));
+      }
+    },
+    [connected, server],
+  );
+
   const disconnect = useCallback(() => {
     if (server) {
       server.disconnect();
@@ -167,6 +195,7 @@ const useBluetooth = (
     addCharacteristicListener,
     isListenerAdded,
     readFromCharacteristic,
+    writeToCharacteristic,
   };
 };
 
