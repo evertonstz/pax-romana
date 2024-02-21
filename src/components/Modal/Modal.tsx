@@ -18,7 +18,7 @@ const Modal = ({ title, open, onClose, footer, children }: ModalProps) => {
       <Drawer
         title={title}
         open={open}
-        height={'100vh'}
+        height={'100dvh'}
         onClose={onClose}
         placement="bottom"
         footer={footer}
