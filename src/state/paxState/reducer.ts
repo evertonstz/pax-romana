@@ -15,6 +15,8 @@ const reducer = (state: PaxState, action: PaxActions): PaxState => {
       return { ...state, heaterSetPointTemperature: action.payload };
     case 'SET_HEATING_STATE':
       return { ...state, heatingSate: action.payload };
+    case 'RESET_PAX_STATE':
+      return initialPaxState;
     default:
       return state;
   }
