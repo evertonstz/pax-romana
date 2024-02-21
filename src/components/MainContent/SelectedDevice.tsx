@@ -57,14 +57,15 @@ export const SelectedDevice = ({
       // add event listener to consume notifications
       // this is needed because new info to read will only
       // be broadcasted once a new Notification is consumed
-      bluetoothState.eventListener.startListening(messagesConsumer).catch(e => {
-        if (e instanceof BaseBluetoothException) {
-          // eslint-disable-next-line no-console
-          console.error('startListening', String(e));
-        }
-      });
+      void bluetoothState.eventListener.startListening(messagesConsumer);
     }
   }, [bluetoothState, messagesConsumer]);
+
+  useEffect(() => {
+    if (!bluetoothState.connected) {
+      actions.resetPaxState();
+    }
+  }, [actions, bluetoothState.connected]);
 
   return (
     <>
