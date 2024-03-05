@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { Devices } from '../../enums';
 import { InvalidSerialException } from '../../exceptions';
 import { PaxSerial } from '../PaxSerial';
