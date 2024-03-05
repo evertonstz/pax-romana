@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { Devices } from '../../../shared/enums';
 import { PaxEncryptedPacket } from '../../../shared/models/Packet';
 import { PaxSerial } from '../../../shared/models/PaxSerial';

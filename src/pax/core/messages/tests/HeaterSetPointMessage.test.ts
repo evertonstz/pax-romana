@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { PaxDecryptedPacket } from '../../../shared/models/Packet';
 import {
   ReadAndWriteTemperatureMessageBuilderFromPacket,
