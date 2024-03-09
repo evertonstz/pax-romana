@@ -1,4 +1,4 @@
-import { Progress } from 'antd';
+import CircularProgressBar from './CircularProgressBar';
 
 interface TemperatureProgressProps {
   connected: boolean;
@@ -13,16 +13,8 @@ const TemperatureProgress = ({
   actualTemperature,
   unit,
 }: TemperatureProgressProps) => {
-  const strokeWidth = 10;
   const buildDefaultProgress = () => {
-    return (
-      <Progress
-        type="dashboard"
-        percent={0}
-        format={() => 'N/A'}
-        strokeWidth={strokeWidth}
-      />
-    );
+    return <CircularProgressBar percentage={0} label="N/A" />;
   };
 
   if (!connected) {
@@ -34,12 +26,9 @@ const TemperatureProgress = ({
   }
 
   return (
-    <Progress
-      type="dashboard"
-      percent={(actualTemperature / heaterSetPointTemperature) * 100}
-      format={() => `${Math.round(actualTemperature)}°${unit}`}
-      strokeLinecap="round"
-      strokeWidth={strokeWidth}
+    <CircularProgressBar
+      percentage={(actualTemperature / heaterSetPointTemperature) * 100}
+      label={`${Math.round(actualTemperature)}°${unit}`}
     />
   );
 };
