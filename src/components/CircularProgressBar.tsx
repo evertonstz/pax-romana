@@ -7,7 +7,7 @@ const CircularProgressBar = ({
   percentage,
   label,
 }: CircularProgressBarProps) => {
-  const parametrizedPercentage = Math.min(100, Math.max(0, percentage));
+  const parametrizedPercentage = Math.min(1, Math.max(0, percentage));
   const radius = 90;
   const strokeWidth = 15;
   const normalizedRadius = radius - strokeWidth * 2;
@@ -29,7 +29,7 @@ const CircularProgressBar = ({
           strokeDasharray={`${perimeter / 2}, ${perimeter / 2}`}
           transform={`rotate(-180 ${radius} ${radius})`}
         />
-        {percentage !== 0 && (
+        {parametrizedPercentage !== 0 && (
           <circle
             className="fill-transparent stroke-black transition-[stroke-dasharray]
               dark:stroke-white"
@@ -38,7 +38,7 @@ const CircularProgressBar = ({
             cx={radius}
             cy={radius}
             strokeLinecap="round"
-            strokeDasharray={`${(parametrizedPercentage / 100) * (perimeter / 2)}, ${perimeter}`}
+            strokeDasharray={`${parametrizedPercentage * (perimeter / 2)}, ${perimeter}`}
             transform={`rotate(-180 ${radius} ${radius})`}
           />
         )}

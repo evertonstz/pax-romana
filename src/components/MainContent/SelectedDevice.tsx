@@ -2,9 +2,10 @@ import { usePaxBluetoothServices } from '@/hooks';
 import { BaseBluetoothException } from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
 import { Pax } from '@/pax';
 import { usePaxContext } from '@/state/hooks';
-import { Button, Flex, Row, Typography } from 'antd';
+import { Flex, Row, Typography } from 'antd';
 import { useCallback, useEffect } from 'react';
 
+import Button from '../Button';
 import HeaterStatus from '../HeaterStatus';
 import TemperatureProgress from '../TemperatureProgress';
 
@@ -87,7 +88,7 @@ export const SelectedDevice = ({
           Current Device: {!currentDevice ? '' : currentDevice.serial}
         </Typography.Text>
         <Row>
-          <Button type="primary" onClick={openDevicesModal}>
+          <Button onClick={openDevicesModal} type="primary">
             Devices
           </Button>
           <Button
@@ -96,6 +97,7 @@ export const SelectedDevice = ({
                 ? bluetoothState.disconnect
                 : bluetoothState.connect
             }
+            type="secondary"
           >
             {bluetoothState.connected ? 'Disconnect' : 'Connect'}
           </Button>

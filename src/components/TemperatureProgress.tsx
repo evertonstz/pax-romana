@@ -5,6 +5,8 @@ interface TemperatureProgressProps {
   heaterSetPointTemperature: number;
   actualTemperature: number;
   unit: 'C' | 'F';
+  minTemperature?: number;
+  maxTemperature?: number;
 }
 
 const TemperatureProgress = ({
@@ -12,10 +14,15 @@ const TemperatureProgress = ({
   heaterSetPointTemperature,
   actualTemperature,
   unit,
+  minTemperature = 175,
+  maxTemperature = 215,
 }: TemperatureProgressProps) => {
   const buildDefaultProgress = () => {
     return <CircularProgressBar percentage={0} label="N/A" />;
   };
+
+  const m = (1 - 0.01) / (maxTemperature - minTemperature);
+  const percentage = m * (actualTemperature - minTemperature) + 0.01;
 
   if (!connected) {
     return buildDefaultProgress();
@@ -27,7 +34,7 @@ const TemperatureProgress = ({
 
   return (
     <CircularProgressBar
-      percentage={(actualTemperature / heaterSetPointTemperature) * 100}
+      percentage={percentage}
       label={`${Math.round(actualTemperature)}°${unit}`}
     />
   );
