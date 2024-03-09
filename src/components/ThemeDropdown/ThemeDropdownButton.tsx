@@ -3,42 +3,37 @@ import { FormatPainterFilled } from '@ant-design/icons';
 import { Button, Dropdown, MenuProps, Tooltip } from 'antd';
 
 const ThemeDropdownButton = () => {
-  const {
-    state: { mode, color },
-    actions: { setThemeMode, setThemeColor },
-  } = useThemeContext();
+  const { theme, setTheme } = useThemeContext();
 
   const items: MenuProps['items'] = [
     {
       key: 'light',
       label: 'Light',
       onClick: () => {
-        setThemeMode('manual');
-        setThemeColor('light');
+        setTheme('light');
       },
     },
     {
       key: 'dark',
       label: 'Dark',
       onClick: () => {
-        setThemeMode('manual');
-        setThemeColor('dark');
+        setTheme('dark');
       },
     },
     {
       key: 'auto',
       label: 'System',
       onClick: () => {
-        setThemeMode('auto');
+        setTheme('system');
       },
     },
   ];
 
   const handleSelectMode = () => {
-    if (mode === 'auto') {
-      return 'auto';
+    if (theme === 'system') {
+      return 'system';
     }
-    if (color === 'light') {
+    if (theme === 'light') {
       return 'light';
     }
     return 'dark';

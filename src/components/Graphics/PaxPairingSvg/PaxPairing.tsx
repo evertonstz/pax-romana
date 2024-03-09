@@ -1,16 +1,10 @@
-import { useThemeContext } from '@/state/hooks';
-import { theme } from 'antd';
-
 import PulsatingLight from './PulsatingLight';
 import Pax3DeviceSvg from './Svg/Pax3DeviceSvg';
 
 const PaxPairing = () => {
-  const {
-    state: { color },
-  } = useThemeContext();
-  const { token } = theme.useToken();
+  const color = 'light';
 
-  const svgFillColor = token.colorIcon;
+  const svgFillColor = '#87CEEB';
   const lightColor = color === 'light' ? '#87CEEB' : '#00FFFF';
 
   return (

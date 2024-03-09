@@ -7,7 +7,7 @@ interface Props {
 export const PageLayout = ({ children }: Props) => {
   return (
     <div
-      className="flex h-full w-full items-center justify-center bg-neutral-100 
+      className="flex h-screen w-screen items-center justify-center bg-neutral-100 
       dark:bg-neutral-950"
     >
       {children}

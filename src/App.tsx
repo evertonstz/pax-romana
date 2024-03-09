@@ -1,4 +1,3 @@
-import { useThemeContext } from '@/state/hooks';
 import { ConfigProvider, theme } from 'antd';
 
 import { PageLayout } from './Layout';
@@ -11,12 +10,8 @@ const getTheme = (color: ThemeColor) => {
 };
 
 function App() {
-  const {
-    state: { color },
-  } = useThemeContext();
-
   return (
-    <ConfigProvider theme={{ algorithm: getTheme(color) }}>
+    <ConfigProvider theme={{ algorithm: getTheme('dark') }}>
       <PageLayout>
         <MainContent />
       </PageLayout>
