@@ -1,6 +1,4 @@
-import { useWindowSize } from '@uidotdev/usehooks';
-import { theme } from 'antd';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 
 interface Props {
   children?: ReactNode;
@@ -8,34 +6,12 @@ interface Props {
 }
 
 const ResizableSquare = ({ children, header }: Props) => {
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  const { token } = theme.useToken();
-  const { width, height } = useWindowSize();
-
-  useEffect(() => {
-    if (width !== null && height !== null) {
-      setIsFullScreen(width < 700);
-    }
-  }, [width, height]);
-
-  const squareStyles = {
-    width: isFullScreen ? '100%' : '600px',
-    height: isFullScreen ? '100%' : '600px',
-    backgroundColor: token.colorBgContainer,
-    border: isFullScreen ? '' : `1px solid ${token.colorBorder}`,
-    borderRadius: isFullScreen ? '0%' : '25px',
-    boxShadow: isFullScreen ? '' : token.boxShadow,
-  };
-
-  const headerStyles = {
-    fontSize: '1.5em',
-    fontWeight: 'bold',
-    marginBottom: '1em',
-  };
-
   return (
-    <div style={squareStyles}>
-      <div style={headerStyles}>{header}</div>
+    <div
+      className="h-full w-full bg-white md:h-[768px] md:w-[768px] md:rounded-3xl 
+    md:border dark:border-neutral-800 dark:bg-neutral-900"
+    >
+      <div>{header}</div>
       {children}
     </div>
   );
