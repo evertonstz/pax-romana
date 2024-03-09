@@ -20,7 +20,7 @@ const CircularProgressBar = ({
     >
       <svg height={radius + strokeWidth / 2} width={radius * 2}>
         <circle
-          className="fill-transparent stroke-waikawa-gray-200 dark:stroke-waikawa-gray-950"
+          className="fill-transparent stroke-neutral-200 dark:stroke-neutral-800"
           strokeWidth={strokeWidth}
           r={normalizedRadius}
           cx={radius}
@@ -31,8 +31,8 @@ const CircularProgressBar = ({
         />
         {percentage !== 0 && (
           <circle
-            className="fill-transparent stroke-waikawa-gray-600 transition-[stroke-dasharray]
-              dark:stroke-waikawa-gray-200"
+            className="fill-transparent stroke-black transition-[stroke-dasharray]
+              dark:stroke-white"
             strokeWidth={strokeWidth}
             r={normalizedRadius}
             cx={radius}
@@ -44,8 +44,8 @@ const CircularProgressBar = ({
         )}
       </svg>
       <div
-        className="absolute inset-x-0 bottom-0 flex justify-center text-waikawa-gray-950
-          dark:text-waikawa-gray-50"
+        className="absolute inset-x-0 bottom-0 flex justify-center text-neutral-900
+          dark:text-neutral-50"
       >
         <span className="text-lg font-bold">{`${label}`}</span>
       </div>
