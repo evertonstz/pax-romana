@@ -40,7 +40,7 @@ const MainContent = () => {
     <>
       <DevicesModal
         open={isDeviceModalOpen}
-        onClose={() => openDevicesModal(false)}
+        onOpenChange={openDevicesModal as () => void}
       />
       <ResizableSquare header={renderSettingsButton()}>
         {renderDevicesContent(deviceStore.currentDevice)}

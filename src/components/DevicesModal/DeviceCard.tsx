@@ -1,14 +1,10 @@
 import { useDevicesLocalStorage } from '@/hooks';
 import { Pax } from '@/pax';
-import { CheckCircleTwoTone } from '@ant-design/icons';
-import { Avatar, Popconfirm } from 'antd';
-import Meta from 'antd/es/card/Meta';
 import { Check } from 'lucide-react';
 
 import { Button } from '../ui/button';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -29,7 +25,7 @@ const DeviceCard = ({ serial }: DeviceCardProps) => {
     currentDevice.serial === serial.serial;
 
   return (
-    <Card className="grid grid-cols-2 md:grid-cols-1">
+    <Card className="grid min-w-[200px] grid-cols-2 md:grid-cols-1">
       <CardHeader>
         <CardTitle>{serial.serial}</CardTitle>
         <CardDescription className="text-xl">{serial.device}</CardDescription>
