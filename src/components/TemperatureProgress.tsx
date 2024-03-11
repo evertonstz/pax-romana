@@ -1,4 +1,4 @@
-import CircularProgressBar from './CircularProgressBar';
+import { CircularProgressBar } from './ui/progress-bar';
 
 interface TemperatureProgressProps {
   connected: boolean;

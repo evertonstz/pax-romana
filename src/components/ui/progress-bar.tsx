@@ -1,11 +1,34 @@
-interface CircularProgressBarProps {
+import { cn } from '@/lib/utils';
+import { type VariantProps, cva } from 'class-variance-authority';
+import { ClassValue } from 'clsx';
+
+const progressVariants = cva('fill-transparent', {
+  variants: {
+    background: {
+      default: 'stroke-neutral-200 dark:stroke-neutral-800',
+      ghost: '',
+    },
+  },
+  defaultVariants: {
+    background: 'default',
+  },
+});
+interface CircularProgressBarProps
+  extends VariantProps<typeof progressVariants> {
   percentage: number;
   label: string;
+  classNames?: {
+    background?: ClassValue;
+    foreground?: ClassValue;
+    label?: ClassValue;
+  };
 }
 
 const CircularProgressBar = ({
   percentage,
   label,
+  background,
+  classNames,
 }: CircularProgressBarProps) => {
   const parametrizedPercentage = Math.min(1, Math.max(0, percentage));
   const radius = 90;
@@ -20,7 +43,10 @@ const CircularProgressBar = ({
     >
       <svg height={radius + strokeWidth / 2} width={radius * 2}>
         <circle
-          className="fill-transparent stroke-neutral-200 dark:stroke-neutral-800"
+          className={cn(
+            progressVariants({ background }),
+            classNames?.background,
+          )}
           strokeWidth={strokeWidth}
           r={normalizedRadius}
           cx={radius}
@@ -31,8 +57,10 @@ const CircularProgressBar = ({
         />
         {parametrizedPercentage !== 0 && (
           <circle
-            className="fill-transparent stroke-black transition-[stroke-dasharray]
-              dark:stroke-white"
+            className={cn(
+              'fill-transparent stroke-black transition-[stroke-dasharray] dark:stroke-white',
+              classNames?.foreground,
+            )}
             strokeWidth={strokeWidth}
             r={normalizedRadius}
             cx={radius}
@@ -43,14 +71,19 @@ const CircularProgressBar = ({
           />
         )}
       </svg>
-      <div
-        className="absolute inset-x-0 bottom-0 flex justify-center text-neutral-900
-          dark:text-neutral-50"
-      >
-        <span className="text-lg font-bold">{`${label}`}</span>
-      </div>
+      {label && (
+        <div
+          className={cn(
+            `absolute inset-x-0 bottom-0 flex justify-center text-lg font-bold text-neutral-900
+            dark:text-neutral-50`,
+            classNames?.label,
+          )}
+        >
+          <span>{`${label}`}</span>
+        </div>
+      )}
     </div>
   );
 };
 
-export default CircularProgressBar;
+export { CircularProgressBar };
