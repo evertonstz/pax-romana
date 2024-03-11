@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useThemeContext } from '@/state/hooks';
+import { Palette } from 'lucide-react';
 
 export function ThemeDropdownButton() {
   const { theme, setTheme } = useThemeContext();
@@ -14,10 +15,15 @@ export function ThemeDropdownButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Open</Button>
+        <Button size={'icon'} className={'rounded-full'} variant="outline">
+          {<Palette />}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+        <DropdownMenuRadioGroup
+          value={theme}
+          onValueChange={setTheme as ((value: string) => void) | undefined}
+        >
           <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
