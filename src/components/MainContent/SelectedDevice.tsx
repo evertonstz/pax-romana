@@ -2,7 +2,6 @@ import { usePaxBluetoothServices } from '@/hooks';
 import { BaseBluetoothException } from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
 import { Pax } from '@/pax';
 import { usePaxContext } from '@/state/hooks';
-import { Flex, Row, Typography } from 'antd';
 import { useCallback, useEffect } from 'react';
 
 import HeaterStatus from '../HeaterStatus';
@@ -69,38 +68,26 @@ export const SelectedDevice = ({
   }, [actions, bluetoothState.connected]);
 
   return (
-    <>
-      <Flex
-        style={{ height: '70%' }}
-        justify="center"
-        align="center"
-        gap="middle"
-        vertical
+    <div className="mx-auto flex flex-col gap-6 self-center">
+      <TemperatureProgress
+        connected={bluetoothState.connected}
+        heaterSetPointTemperature={state.heaterSetPointTemperature}
+        actualTemperature={state.actualTemperature}
+        unit={'C'}
+      />
+      <HeaterStatus heaterStatus={state.heatingSate} />
+      <h1>Current Device: {!currentDevice ? '' : currentDevice.serial}</h1>
+      <Button onClick={openDevicesModal}>Devices</Button>
+      <Button
+        onClick={
+          bluetoothState.connected
+            ? bluetoothState.disconnect
+            : bluetoothState.connect
+        }
+        variant="secondary"
       >
-        <TemperatureProgress
-          connected={bluetoothState.connected}
-          heaterSetPointTemperature={state.heaterSetPointTemperature}
-          actualTemperature={state.actualTemperature}
-          unit={'C'}
-        />
-        <HeaterStatus heaterStatus={state.heatingSate} />
-        <Typography.Text>
-          Current Device: {!currentDevice ? '' : currentDevice.serial}
-        </Typography.Text>
-        <Row>
-          <Button onClick={openDevicesModal}>Devices</Button>
-          <Button
-            onClick={
-              bluetoothState.connected
-                ? bluetoothState.disconnect
-                : bluetoothState.connect
-            }
-            variant="secondary"
-          >
-            {bluetoothState.connected ? 'Disconnect' : 'Connect'}
-          </Button>
-        </Row>
-      </Flex>
-    </>
+        {bluetoothState.connected ? 'Disconnect' : 'Connect'}
+      </Button>
+    </div>
   );
 };
