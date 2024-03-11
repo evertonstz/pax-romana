@@ -1,6 +1,6 @@
 import { Modal } from '@/components';
 import { useDevicesLocalStorage } from '@/hooks';
-import { WarningFilled } from '@ant-design/icons';
+import { TriangleAlert } from 'lucide-react';
 
 import AddDeviceFooter from '../AddDeviceFooter';
 import DeviceCard from './DeviceCard';
@@ -23,7 +23,9 @@ const DevicesModal = ({ open, onOpenChange }: DevicesModalProps) => {
     return (
       <div className="grid min-h-[175px] grid-cols-1 gap-5 md:grid-cols-2">
         {deviceStore.store.length === 0 ? (
-          <WarningFilled style={{ fontSize: '64px', opacity: 0.3 }} />
+          <div className="flex justify-center">
+            <TriangleAlert size={175} opacity={0.3} />
+          </div>
         ) : (
           renderCards()
         )}

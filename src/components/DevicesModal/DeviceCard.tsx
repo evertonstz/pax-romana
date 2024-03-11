@@ -25,14 +25,14 @@ const DeviceCard = ({ serial }: DeviceCardProps) => {
     currentDevice.serial === serial.serial;
 
   return (
-    <Card className="grid min-w-[200px] grid-cols-2 md:grid-cols-1">
+    <Card className="grid h-28 min-w-48 grid-cols-2 md:h-44 md:grid-cols-1">
       <CardHeader>
         <CardTitle>{serial.serial}</CardTitle>
         <CardDescription className="text-xl">{serial.device}</CardDescription>
       </CardHeader>
       <CardFooter
         className={
-          'grid grid-cols-1 content-between gap-2 p-6 md:grid-cols-2 md:pt-0'
+          'grid grid-cols-1 p-0 pl-6 pr-6 md:grid-cols-2 md:gap-2 md:pb-6'
         }
       >
         <Button
