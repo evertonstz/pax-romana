@@ -10,7 +10,7 @@ export const PageLayout = ({ children }: Props) => {
       // eslint-disable-next-line react/no-unknown-property
       vaul-drawer-wrapper=""
       className="flex h-screen w-screen items-center justify-center bg-neutral-100 
-      dark:bg-neutral-950"
+      dark:bg-black"
     >
       {children}
     </div>
