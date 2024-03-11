@@ -1,9 +1,7 @@
 import { useDevicesLocalStorage } from '@/hooks';
 import { Pax } from '@/pax';
-import { Col, Row } from 'antd';
 import { useState } from 'react';
 
-import { ThemeDropdownButton } from '..';
 import DevicesModal from '../DevicesModal';
 import { NoSelectedDevice } from './NoSelectedDevice';
 import ResizableSquare from './ResizableSquare';
@@ -26,23 +24,13 @@ const MainContent = () => {
     );
   };
 
-  const renderSettingsButton = () => {
-    return (
-      <Row justify="end" style={{ margin: '10px' }}>
-        <Col>
-          <ThemeDropdownButton />
-        </Col>
-      </Row>
-    );
-  };
-
   return (
     <>
       <DevicesModal
         open={isDeviceModalOpen}
         onOpenChange={openDevicesModal as () => void}
       />
-      <ResizableSquare header={renderSettingsButton()}>
+      <ResizableSquare>
         {renderDevicesContent(deviceStore.currentDevice)}
       </ResizableSquare>
     </>

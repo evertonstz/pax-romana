@@ -31,7 +31,7 @@ const Modal = ({ title, open, onOpenChange, footer, children }: ModalProps) => {
     return (
       <Drawer open={open} onOpenChange={onOpenChange} shouldScaleBackground>
         <DrawerContent>
-          <DrawerHeader className="text-center">
+          <DrawerHeader className="sm:text-center">
             <DrawerTitle>{title}</DrawerTitle>
           </DrawerHeader>
           <div className="px-4">{children}</div>
