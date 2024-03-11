@@ -15,7 +15,7 @@ export function ThemeDropdownButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size={'icon'} className={'rounded-full'} variant="outline">
+        <Button size={'icon'} variant="outline">
           {<Palette />}
         </Button>
       </DropdownMenuTrigger>
