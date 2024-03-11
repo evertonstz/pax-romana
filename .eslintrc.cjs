@@ -9,9 +9,15 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', 'prettier'],
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended-type-checked', 
-  'plugin:@typescript-eslint/stylistic-type-checked', 'plugin:prettier/recommended', 'plugin:react/recommended',
-  'plugin:react-hooks/recommended', 'plugin:react/jsx-runtime'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
+    'plugin:prettier/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:react/jsx-runtime',
+  ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -23,9 +29,10 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    'eqeqeq': 'error',
+    eqeqeq: 'error',
     'prettier/prettier': 'error',
     'max-len': ['error', 100],
-    'no-console': 'error'
+    'no-console': 'error',
+    'react/prop-types': 0,
   },
-}
+};
