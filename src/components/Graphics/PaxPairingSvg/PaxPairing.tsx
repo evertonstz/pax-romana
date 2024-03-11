@@ -2,10 +2,8 @@ import PulsatingLight from './PulsatingLight';
 import Pax3DeviceSvg from './Svg/Pax3DeviceSvg';
 
 const PaxPairing = () => {
-  const color = 'light';
-
-  const svgFillColor = '#87CEEB';
-  const lightColor = color === 'light' ? '#87CEEB' : '#00FFFF';
+  const svgFillColor = '#666666';
+  const lightColor = '#00FFFF';
 
   return (
     <div
@@ -26,7 +24,7 @@ const PaxPairing = () => {
       </div>
       <Pax3DeviceSvg
         fillColor={svgFillColor}
-        showShadow={color === 'light' ? true : false}
+        showShadow
         style={{
           width: '50%',
         }}
