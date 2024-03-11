@@ -5,7 +5,7 @@ import { ThemeDropdownButton } from '.';
 const Navbar = () => {
   return (
     <div
-      className="mx-auto flex h-16 w-screen items-center border-b border-white bg-white px-6 
+      className="mx-auto flex h-16 w-screen items-center border-b border-neutral-300 bg-white px-6 
       dark:border-neutral-800 dark:bg-black"
     >
       <div className="flex gap-3">
