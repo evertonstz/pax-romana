@@ -5,9 +5,9 @@ import { usePaxContext } from '@/state/hooks';
 import { Flex, Row, Typography } from 'antd';
 import { useCallback, useEffect } from 'react';
 
-import Button from '../Button';
 import HeaterStatus from '../HeaterStatus';
 import TemperatureProgress from '../TemperatureProgress';
+import { Button } from '../ui/button';
 
 interface SelectedDeviceProps {
   currentDevice: Pax.lib.PaxSerial;
@@ -88,16 +88,14 @@ export const SelectedDevice = ({
           Current Device: {!currentDevice ? '' : currentDevice.serial}
         </Typography.Text>
         <Row>
-          <Button onClick={openDevicesModal} type="primary">
-            Devices
-          </Button>
+          <Button onClick={openDevicesModal}>Devices</Button>
           <Button
             onClick={
               bluetoothState.connected
                 ? bluetoothState.disconnect
                 : bluetoothState.connect
             }
-            type="secondary"
+            variant="secondary"
           >
             {bluetoothState.connected ? 'Disconnect' : 'Connect'}
           </Button>
