@@ -29,7 +29,7 @@ const Modal = ({ title, open, onOpenChange, footer, children }: ModalProps) => {
 
   if (isSmallScreen) {
     return (
-      <Drawer open={open} onOpenChange={onOpenChange}>
+      <Drawer open={open} onOpenChange={onOpenChange} shouldScaleBackground>
         <DrawerContent>
           <DrawerHeader className="text-center">
             <DrawerTitle>{title}</DrawerTitle>
