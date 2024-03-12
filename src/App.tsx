@@ -1,6 +1,5 @@
 import { PageLayout } from './Layout';
 import MainContent from './components/MainContent';
-import { ThemeColor } from './types';
 
 function App() {
   return (
