@@ -24,7 +24,7 @@ const DeviceButton = ({ options, onValueChange, value }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>
+        <Button className="rounded-r-none border-r-0" variant={'outline'}>
           {value} <ChevronDown />
         </Button>
       </DropdownMenuTrigger>

@@ -1,14 +1,14 @@
 import { useDevicesLocalStorage } from '@/hooks';
 import { Pax } from '@/pax';
-import { Input, Space } from 'antd';
 import { useState } from 'react';
 
 import { SUPPORTED_DEVICES } from '../DevicesModal/constants';
 import { Button } from '../ui/button';
 import DeviceButton from './DeviceButton';
+import SerialInput from './SerialInput';
 
 const SERIAL_SIZE = 8;
-const INPUT_PLACEHOLDER = `Insert device's ${SERIAL_SIZE} digit serial`;
+const INPUT_PLACEHOLDER = `Insert ${SERIAL_SIZE} digits serial`;
 
 const buildOptions = (devices: Pax.lib.Devices[]) => {
   return devices.map(device => {
@@ -44,32 +44,29 @@ const AddDeviceFooter = () => {
 
   return (
     <>
-      <DeviceButton
-        value={deviceValue}
-        options={buildOptions(SUPPORTED_DEVICES)}
-        onValueChange={setDeviceValue as (value: string) => void}
-      />
-      <Button onClick={handleAddNewDeviceButton}>Add Device</Button>
-      <Space.Compact style={{ width: '100%' }}>
-        <Input
-          count={{
-            show: true,
-            max: SERIAL_SIZE,
-            exceedFormatter: (txt, { max }) => txt.slice(0, max),
-          }}
-          value={serialInput}
-          placeholder={INPUT_PLACEHOLDER}
-          onChange={e => setSerialInput(e.target.value.toUpperCase())}
-          onPressEnter={handleAddNewDeviceButton}
+      <div className="flex grow gap-0">
+        <DeviceButton
+          value={deviceValue}
+          options={buildOptions(SUPPORTED_DEVICES)}
+          onValueChange={setDeviceValue as (value: string) => void}
         />
-        {/* <Button
-          type="primary"
-          disabled={addNewDeviceButtonDisabled(serialInput)}
+        <div className="grow">
+          <SerialInput
+            max={SERIAL_SIZE}
+            value={serialInput}
+            onValueChange={setSerialInput}
+            placeholder={INPUT_PLACEHOLDER}
+          />
+        </div>
+        <Button
+          className="rounded-l-none border-l-0"
+          variant={'outline'}
           onClick={handleAddNewDeviceButton}
+          disabled={addNewDeviceButtonDisabled(serialInput)}
         >
           Add Device
-        </Button> */}
-      </Space.Compact>
+        </Button>
+      </div>
     </>
   );
 };
