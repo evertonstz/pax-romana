@@ -1,5 +1,4 @@
 import { Pax } from '@/pax';
-import { Typography } from 'antd';
 
 interface HeaterStatusProps {
   heaterStatus?: Pax.lib.HeatingStates;
@@ -29,7 +28,7 @@ const HeaterStatus = ({ heaterStatus }: HeaterStatusProps) => {
   };
 
   const textProps = buildTextProps(heaterStatus);
-  return <Typography.Text>{textProps.statusText}</Typography.Text>;
+  return <div>{textProps.statusText}</div>;
 };
 
 export default HeaterStatus;
