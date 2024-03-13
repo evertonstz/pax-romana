@@ -10,6 +10,11 @@ import SerialInput from './SerialInput';
 const SERIAL_SIZE = 8;
 const INPUT_PLACEHOLDER = `Insert ${SERIAL_SIZE} digits serial`;
 
+interface Props {
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+}
+
 const buildOptions = (devices: Pax.lib.Devices[]) => {
   return devices.map(device => {
     return { value: device, label: device };
@@ -23,7 +28,7 @@ const addNewDeviceButtonDisabled = (serialInput: string | undefined) => {
   return false;
 };
 
-const AddDeviceFooter = () => {
+const AddDeviceFooter = (props: Props) => {
   const defaultDevice = SUPPORTED_DEVICES[0];
   const [serialInput, setSerialInput] = useState<string | undefined>(undefined);
   const [deviceValue, setDeviceValue] =
@@ -56,6 +61,8 @@ const AddDeviceFooter = () => {
             value={serialInput}
             onValueChange={setSerialInput}
             placeholder={INPUT_PLACEHOLDER}
+            onFocus={props.onFocus}
+            onBlur={props.onBlur}
           />
         </div>
         <Button

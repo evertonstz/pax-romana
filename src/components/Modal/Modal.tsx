@@ -1,4 +1,4 @@
-import { useWindowSize } from '@uidotdev/usehooks';
+import { useIsMobile } from '@/hooks';
 
 import {
   Dialog,
@@ -23,11 +23,11 @@ export interface ModalProps {
   children?: React.ReactNode;
 }
 
-const Modal = ({ title, open, onOpenChange, footer, children }: ModalProps) => {
-  const { width } = useWindowSize();
-  const isSmallScreen = !width ? false : width < 768;
+const Modal = (props: ModalProps) => {
+  const { title, open, onOpenChange, footer, children } = props;
+  const isMobile = useIsMobile();
 
-  if (isSmallScreen) {
+  if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange} shouldScaleBackground>
         <DrawerContent>
