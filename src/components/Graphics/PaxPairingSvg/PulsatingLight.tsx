@@ -3,16 +3,30 @@ import React, { useEffect, useState } from 'react';
 interface PulsatingLightProps {
   radius?: string;
   color: string;
+  speed?: 'slow' | 'normal' | 'fast';
 }
 
-const PulsatingLight = ({ radius, color }: PulsatingLightProps) => {
+const PulsatingLight = (props: PulsatingLightProps) => {
+  const { speed = 'normal', color, radius } = props;
   const [isBloomed, setIsBloomed] = useState(false);
+  const getSpeed = (speed: 'fast' | 'normal' | 'slow') => {
+    switch (speed) {
+      case 'fast':
+        return 0.5;
+      case 'slow':
+        return 1.5;
+      default:
+        return 1;
+    }
+  };
+  const speedInSeconds = getSpeed(speed);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIsBloomed(prevState => !prevState);
-    }, 1000);
+    }, speedInSeconds * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [speedInSeconds]);
 
   const animationStyle: React.CSSProperties = {
     width: radius ? radius : '100px',
@@ -20,7 +34,7 @@ const PulsatingLight = ({ radius, color }: PulsatingLightProps) => {
     borderRadius: '50%',
     backgroundColor: color,
     boxShadow: isBloomed ? `0 0 50px 10px ${color}` : 'none',
-    transition: 'box-shadow 1s ease-in-out',
+    transition: `box-shadow ${speedInSeconds}s ease-in-out`,
   };
 
   const buildCircle = (x: string, y: string) => {

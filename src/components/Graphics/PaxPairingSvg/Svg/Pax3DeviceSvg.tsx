@@ -4,17 +4,15 @@ interface Pax3DeviceSvgProps {
   showShadow?: boolean;
 }
 
-const Pax3DeviceSvg = ({
-  fillColor,
-  style,
-  showShadow,
-}: Pax3DeviceSvgProps) => {
+const Pax3DeviceSvg = (props: Pax3DeviceSvgProps) => {
+  const { fillColor, style, showShadow } = props;
   return (
     <svg
+      id="pax3device"
       viewBox="0 0 339 675"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ width: '100%', display: 'block', ...style }}
+      style={{ display: 'block', width: '100%', height: '100%', ...style }}
     >
       <rect width="100%" height="100%" />
       <path

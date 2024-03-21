@@ -5,8 +5,11 @@ interface Props {
   onValueChange?: (input: string) => void;
   max?: number;
   placeholder?: string;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
-const SerialInput = ({ value, onValueChange, max, placeholder }: Props) => {
+const SerialInput = (props: Props) => {
+  const { value, onValueChange, max, placeholder, onFocus, onBlur } = props;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!onValueChange) {
       return;
@@ -31,6 +34,8 @@ const SerialInput = ({ value, onValueChange, max, placeholder }: Props) => {
         onChange={e => handleChange(e)}
         value={value}
         placeholder={placeholder}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
       <div className="absolute inset-y-0 right-0 mr-[1px] flex items-center">
         <p
@@ -42,13 +47,6 @@ const SerialInput = ({ value, onValueChange, max, placeholder }: Props) => {
         </p>
       </div>
     </div>
-    //     <Input
-    //       className={`rounded-none focus-visible:border-neutral-400 focus-visible:ring-0
-    //   focus-visible:ring-offset-0 dark:focus-visible:border-neutral-600`}
-    //       onChange={e => handleChange(e)}
-    //       value={value}
-    //       placeholder={placeholder}
-    //     />
   );
 };
 export default SerialInput;
