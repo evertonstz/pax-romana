@@ -1,3 +1,5 @@
+import { ColorThemeMessage } from '@/pax/core/messages/ColorThemeMessage';
+
 import {
   ActualTemperatureMessage,
   HeaterSetPointMessage,
@@ -29,6 +31,8 @@ export const decodeDecryptedPacket = (
       return HeaterSetPointMessage.createWithPacket(packet);
     case Messages.ATTRIBUTE_HEATING_STATE:
       return new HeatingStateMessage(packet);
+    case Messages.ATTRIBUTE_COLOR_THEME:
+      return ColorThemeMessage.createWithPacket(packet);
     default:
       return new UnknownMessage(messageType, packet);
   }
