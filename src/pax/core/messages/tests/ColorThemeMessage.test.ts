@@ -65,8 +65,7 @@ const theme = {
 
 describe('ColorThemeMessage.ts', () => {
   // eslint-disable-next-line max-len
-  const decryptedHexPacket =
-    '1404ff73289900680105ff7328990068000ffd9528990088020bff727d00409a01063af54f71f8899a493279d0a9e0fa';
+  const decryptedHexPacket = `1404ff73289900680105ff7328990068000ffd9528990088020bff727d00409a01063af54f71f8899a493279d0a9e0fa`;
 
   const paxDecryptedPacket = new PaxDecryptedPacket(
     hexToBuffer(decryptedHexPacket),
