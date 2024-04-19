@@ -14,7 +14,7 @@ export interface UsePaxBluetoothServicesState {
     isListenerAdded: boolean;
   };
   readFromMainService: () => Promise<Pax.lib.messages.MessageAbs>;
-  writeToMainService: (message: Pax.lib.PaxEncryptedPacket) => Promise<void>;
+  writeToMainService: (packet: Pax.lib.PaxEncryptedPacket) => Promise<void>;
 }
 
 export const usePaxBluetoothServices = (

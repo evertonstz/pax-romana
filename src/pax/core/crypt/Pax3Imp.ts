@@ -53,7 +53,7 @@ export class Pax3Imp extends PaxAbs {
   } {
     return {
       iv: CryptoJS.enc.Hex.parse(hexPacket.slice(-32)),
-      hexPacketToDecrypt: CryptoJS.enc.Hex.parse(hexPacket.slice(0, 32)),
+      hexPacketToDecrypt: CryptoJS.enc.Hex.parse(hexPacket.slice(0, -32)),
     };
   }
 
