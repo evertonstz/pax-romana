@@ -4,4 +4,5 @@ export interface PaxState {
   actualTemperature: number;
   heaterSetPointTemperature: number;
   heatingSate?: Pax.lib.HeatingStates;
+  colorTheme?: Pax.lib.ColorTheme;
 }

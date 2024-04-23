@@ -15,7 +15,9 @@ const MainContent = () => {
     currentDevice: Pax.lib.PaxSerial | undefined,
   ) => {
     return !currentDevice ? (
-      <NoSelectedDevice />
+      <div className="mx-3 flex flex-grow justify-center">
+        <NoSelectedDevice />
+      </div>
     ) : (
       <SelectedDevice
         currentDevice={currentDevice}

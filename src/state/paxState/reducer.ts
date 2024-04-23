@@ -5,6 +5,7 @@ export const initialPaxState: PaxState = {
   actualTemperature: 0,
   heaterSetPointTemperature: 0,
   heatingSate: undefined,
+  colorTheme: undefined,
 };
 
 const reducer = (state: PaxState, action: PaxActions): PaxState => {
@@ -15,6 +16,8 @@ const reducer = (state: PaxState, action: PaxActions): PaxState => {
       return { ...state, heaterSetPointTemperature: action.payload };
     case 'SET_HEATING_STATE':
       return { ...state, heatingSate: action.payload };
+    case 'SET_COLOR_THEME':
+      return { ...state, colorTheme: action.payload };
     case 'RESET_PAX_STATE':
       return initialPaxState;
     default:

@@ -1,6 +1,5 @@
 import { useDevicesLocalStorage } from '@/hooks';
 import { Pax } from '@/pax';
-import { useState } from 'react';
 
 import { SUPPORTED_DEVICES } from '../DevicesModal/constants';
 import { Button } from '../ui/button';
@@ -13,6 +12,10 @@ const INPUT_PLACEHOLDER = `Insert ${SERIAL_SIZE} digits serial`;
 interface Props {
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  serialInput?: string;
+  setSerialInput: React.Dispatch<React.SetStateAction<string | undefined>>;
+  deviceValue: Pax.lib.Devices;
+  setDeviceValue: React.Dispatch<React.SetStateAction<Pax.lib.Devices>>;
 }
 
 const buildOptions = (devices: Pax.lib.Devices[]) => {
@@ -29,10 +32,7 @@ const addNewDeviceButtonDisabled = (serialInput: string | undefined) => {
 };
 
 const AddDeviceFooter = (props: Props) => {
-  const defaultDevice = SUPPORTED_DEVICES[0];
-  const [serialInput, setSerialInput] = useState<string | undefined>(undefined);
-  const [deviceValue, setDeviceValue] =
-    useState<Pax.lib.Devices>(defaultDevice);
+  const { serialInput, setSerialInput, deviceValue, setDeviceValue } = props;
 
   const deviceStore = useDevicesLocalStorage();
 
