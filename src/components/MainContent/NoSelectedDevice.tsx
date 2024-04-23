@@ -1,6 +1,6 @@
 import { useIsMobile } from '@/hooks';
 import { Pax } from '@/pax';
-import { Terminal } from 'lucide-react';
+import { Barcode } from 'lucide-react';
 import { useState } from 'react';
 
 import AddDeviceFooter from '../AddDeviceFooter';
@@ -27,7 +27,7 @@ export const NoSelectedDevice = () => {
         setDeviceValue={setDeviceValue}
       />
       <Alert>
-        <Terminal className="h-4 w-4" />
+        <Barcode className="h-4 w-4" />
         <AlertTitle>Heads up!</AlertTitle>
         <AlertDescription>
           Make sure to add the correct serial from the back of your device.
