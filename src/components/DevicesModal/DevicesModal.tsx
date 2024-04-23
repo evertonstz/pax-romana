@@ -1,9 +1,12 @@
 import { Modal } from '@/components';
 import { useDevicesLocalStorage } from '@/hooks';
+import { Pax } from '@/pax';
 import { TriangleAlert } from 'lucide-react';
+import { useState } from 'react';
 
 import AddDeviceFooter from '../AddDeviceFooter';
 import DeviceCard from './DeviceCard';
+import { SUPPORTED_DEVICES } from './constants';
 
 export interface DevicesModalProps {
   open: boolean;
@@ -11,6 +14,10 @@ export interface DevicesModalProps {
 }
 
 const DevicesModal = ({ open, onOpenChange }: DevicesModalProps) => {
+  const [serialInput, setSerialInput] = useState<string | undefined>(undefined);
+  const defaultDevice = SUPPORTED_DEVICES[0];
+  const [deviceValue, setDeviceValue] =
+    useState<Pax.lib.Devices>(defaultDevice);
   const deviceStore = useDevicesLocalStorage();
 
   const renderCards = () => {
@@ -34,7 +41,14 @@ const DevicesModal = ({ open, onOpenChange }: DevicesModalProps) => {
   };
 
   const renderFooter = () => {
-    return <AddDeviceFooter />;
+    return (
+      <AddDeviceFooter
+        serialInput={serialInput}
+        setSerialInput={setSerialInput}
+        deviceValue={deviceValue}
+        setDeviceValue={setDeviceValue}
+      />
+    );
   };
 
   return (

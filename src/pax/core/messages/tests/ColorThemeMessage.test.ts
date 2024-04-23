@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { ColorThemeMessage } from '../ColorThemeMessage';
 
-const theme = {
+export const theme = {
   heating: {
     animation: 0,
     color1: {

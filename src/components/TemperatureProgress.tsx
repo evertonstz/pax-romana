@@ -18,7 +18,11 @@ const TemperatureProgress = ({
   maxTemperature = 215,
 }: TemperatureProgressProps) => {
   const buildDefaultProgress = () => {
-    return <CircularProgressBar percentage={0} label="N/A" />;
+    return (
+      <div className="animate-pulse">
+        <CircularProgressBar percentage={0} />
+      </div>
+    );
   };
 
   const m = (1 - 0.01) / (maxTemperature - minTemperature);

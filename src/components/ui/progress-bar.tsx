@@ -16,7 +16,7 @@ const progressVariants = cva('fill-transparent', {
 interface CircularProgressBarProps
   extends VariantProps<typeof progressVariants> {
   percentage: number;
-  label: string;
+  label?: string;
   classNames?: {
     background?: ClassValue;
     foreground?: ClassValue;
@@ -71,7 +71,7 @@ const CircularProgressBar = ({
           />
         )}
       </svg>
-      {label && (
+      {label ? (
         <div
           className={cn(
             `absolute inset-x-0 bottom-0 flex justify-center text-lg font-bold text-neutral-900
@@ -79,8 +79,13 @@ const CircularProgressBar = ({
             classNames?.label,
           )}
         >
-          <span>{`${label}`}</span>
+          {`${label}`}
         </div>
+      ) : (
+        <div
+          className="absolute bottom-0 h-7 w-12 justify-center 
+        rounded bg-neutral-200 dark:bg-neutral-800"
+        ></div>
       )}
     </div>
   );

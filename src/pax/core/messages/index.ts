@@ -6,3 +6,4 @@ export * from './UnknownMessage';
 export * from './MessageAbs';
 export * from './ReadAndWriteMessageAbs';
 export * from './HeatingStateMessage';
+export * from './ColorThemeMessage';

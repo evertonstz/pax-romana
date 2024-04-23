@@ -1,0 +1,5 @@
+@keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    20%, 80% { transform: rotate(-10deg); }
+    40%, 60% { transform: rotate(10deg); }
+  }
