@@ -82,7 +82,10 @@ const CircularProgressBar = ({
           {`${label}`}
         </div>
       ) : (
-        <div className="absolute bottom-0 h-7 w-12 justify-center rounded bg-neutral-200 dark:bg-neutral-800"></div>
+        <div
+          className="absolute bottom-0 h-7 w-12 justify-center 
+        rounded bg-neutral-200 dark:bg-neutral-800"
+        ></div>
       )}
     </div>
   );

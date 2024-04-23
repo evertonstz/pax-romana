@@ -1,8 +1,7 @@
-import { PaxAddSerial, PaxPairing } from '@/components/Graphics';
+import { PaxPairing } from '@/components/Graphics';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks';
-import { connect } from 'http2';
 import { Terminal } from 'lucide-react';
 
 export interface IConnectProps {
@@ -20,7 +19,7 @@ export function Connect(props: IConnectProps) {
         pairingAnimation
       />
 
-      <Button onClick={props.connect} variant="secondary">
+      <Button onClick={() => void props.connect()} variant="secondary">
         Connect
       </Button>
       <Alert>
