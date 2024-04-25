@@ -5,4 +5,5 @@ export interface PaxState {
   heaterSetPointTemperature: number;
   heatingSate?: Pax.lib.HeatingStates;
   colorTheme?: Pax.lib.ColorTheme;
+  batteryPercentage?: number;
 }

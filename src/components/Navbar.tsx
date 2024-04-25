@@ -1,12 +1,14 @@
-import { useDevicesLocalStorage } from '@/hooks';
+import { useDevicesLocalStorage, useIsMobile } from '@/hooks';
 import { Cloudy } from 'lucide-react';
 import { useState } from 'react';
 
 import { ThemeDropdownButton } from '.';
+import { BatteryIndicator } from './BatteryIndicator';
 import DevicesModal from './DevicesModal';
 import { Button } from './ui/button';
 
 const Navbar = () => {
+  const isMobile = useIsMobile();
   const [isDeviceModalOpen, openDevicesModal] = useState(false);
   const deviceStore = useDevicesLocalStorage();
 
@@ -28,10 +30,18 @@ const Navbar = () => {
         </div>
         <div className="flex-grow bg-white"></div>
         <div className="flex gap-3">
-          <Button onClick={openDevicesModal as () => void}>
-            {deviceStore.currentDevice
-              ? deviceStore.currentDevice.serial
-              : 'Devices'}
+          <Button
+            variant={deviceStore.currentDevice ? 'secondary' : 'default'}
+            onClick={openDevicesModal as () => void}
+          >
+            {deviceStore.currentDevice ? (
+              <div className="flex flex-row place-items-center gap-3">
+                <BatteryIndicator />
+                {isMobile ? null : deviceStore.currentDevice.serial}
+              </div>
+            ) : (
+              'Devices'
+            )}
           </Button>
           <ThemeDropdownButton />
         </div>
