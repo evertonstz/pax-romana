@@ -18,6 +18,8 @@ const reducer = (state: PaxState, action: PaxActions): PaxState => {
       return { ...state, heatingSate: action.payload };
     case 'SET_COLOR_THEME':
       return { ...state, colorTheme: action.payload };
+    case 'SET_BATTERY_PERCENTAGE':
+      return { ...state, batteryPercentage: action.payload };
     case 'RESET_PAX_STATE':
       return initialPaxState;
     default:

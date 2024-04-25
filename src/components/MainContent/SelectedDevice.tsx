@@ -2,7 +2,10 @@ import { usePaxBluetoothServices } from '@/hooks';
 import { BaseBluetoothException } from '@/hooks/usePaxBluetoothServices/useBluetooth/exceptions';
 import { Pax } from '@/pax';
 import { post } from '@/pax/containers/api';
-import { ColorThemeMessage } from '@/pax/core/messages';
+import {
+  BatteryPercentageMessage,
+  ColorThemeMessage,
+} from '@/pax/core/messages';
 import { ColorTheme } from '@/pax/shared/types';
 import { usePaxContext } from '@/state/hooks';
 import { isEqual } from 'lodash';
@@ -46,6 +49,9 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
         }
         if (message instanceof Pax.lib.messages.ColorThemeMessage) {
           actions.setColorTheme(message.theme);
+        }
+        if (message instanceof BatteryPercentageMessage) {
+          actions.setBatteryPercentage(message.percentage);
         }
       })
       .catch(e => {
