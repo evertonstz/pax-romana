@@ -4,6 +4,7 @@ import { Pax } from '@/pax';
 import { post } from '@/pax/containers/api';
 import {
   BatteryPercentageMessage,
+  BrightnessMessage,
   ColorThemeMessage,
 } from '@/pax/core/messages';
 import { ColorTheme } from '@/pax/shared/types';
@@ -52,6 +53,9 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
         }
         if (message instanceof BatteryPercentageMessage) {
           actions.setBatteryPercentage(message.percentage);
+        }
+        if (message instanceof BrightnessMessage) {
+          actions.setBrightness(message.brightness);
         }
       })
       .catch(e => {

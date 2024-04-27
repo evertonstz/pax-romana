@@ -3,6 +3,7 @@ import { ColorThemeMessage } from '@/pax/core/messages/ColorThemeMessage';
 import {
   ActualTemperatureMessage,
   BatteryPercentageMessage,
+  BrightnessMessage,
   HeaterSetPointMessage,
   HeatingStateMessage,
   MessageAbs,
@@ -36,6 +37,8 @@ export const decodeDecryptedPacket = (
       return ColorThemeMessage.createWithPacket(packet);
     case Messages.ATTRIBUTE_BATTERY:
       return new BatteryPercentageMessage(packet);
+    case Messages.ATTRIBUTE_BRIGHTNESS:
+      return BrightnessMessage.createWithPacket(packet);
     default:
       return new UnknownMessage(messageType, packet);
   }
