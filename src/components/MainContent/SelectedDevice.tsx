@@ -4,6 +4,7 @@ import { Pax } from '@/pax';
 import { post } from '@/pax/containers/api';
 import {
   BatteryPercentageMessage,
+  BrightnessMessage,
   ColorThemeMessage,
 } from '@/pax/core/messages';
 import { ColorTheme } from '@/pax/shared/types';
@@ -16,6 +17,7 @@ import TemperatureProgress from '../TemperatureProgress';
 import { ThemePicker } from '../ThemePicker';
 import { hardcodedThemes } from '../ThemePicker/colors';
 import { Button } from '../ui/button';
+import { Slider } from '../ui/slider';
 import { Connect } from './SelectedDevice/Connect';
 
 interface SelectedDeviceProps {
@@ -52,6 +54,9 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
         }
         if (message instanceof BatteryPercentageMessage) {
           actions.setBatteryPercentage(message.percentage);
+        }
+        if (message instanceof BrightnessMessage) {
+          actions.setBrightness(message.brightness);
         }
       })
       .catch(e => {
@@ -95,6 +100,22 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
         heaterSetPointTemperature={state.heaterSetPointTemperature}
         actualTemperature={state.actualTemperature}
         unit={'C'}
+      />
+      <Slider
+        disabled={!bluetoothState.connected && !state.brightness}
+        max={1}
+        step={0.1}
+        value={state.brightness ? [state.brightness] : [0]}
+        onValueChange={value => {
+          actions.setBrightness(value[0]);
+        }}
+        onValueCommit={value => {
+          const toPost = post(
+            BrightnessMessage.createWithBrightness(value[0]),
+            currentDevice,
+          );
+          void bluetoothState.writeToMainService(toPost.packet);
+        }}
       />
       <HeaterStatus heaterStatus={state.heatingSate} />
       <h1>Device: {!currentDevice ? '' : currentDevice.serial}</h1>

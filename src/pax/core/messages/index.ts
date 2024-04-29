@@ -8,3 +8,4 @@ export * from './ReadAndWriteMessageAbs';
 export * from './HeatingStateMessage';
 export * from './ColorThemeMessage';
 export * from './BatteryPercentageMessage';
+export * from './BrightnessMessage';

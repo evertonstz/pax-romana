@@ -6,6 +6,7 @@ export type PaxActions =
   | { type: 'SET_HEATING_STATE'; payload: Pax.lib.HeatingStates }
   | { type: 'SET_COLOR_THEME'; payload: Pax.lib.ColorTheme }
   | { type: 'SET_BATTERY_PERCENTAGE'; payload: number }
+  | { type: 'SET_BRIGHTNESS'; payload: number }
   | { type: 'RESET_PAX_STATE' };
 
 export interface BuiltPaxActions {
@@ -14,6 +15,7 @@ export interface BuiltPaxActions {
   setHeatingState: (heatingSate: Pax.lib.HeatingStates) => void;
   setColorTheme: (theme: Pax.lib.ColorTheme) => void;
   setBatteryPercentage: (percentage: number) => void;
+  setBrightness: (brightness: number) => void;
   resetPaxState: () => void;
 }
 
@@ -56,6 +58,13 @@ const setBatteryPercentage = (
   dispatch({ type: 'SET_BATTERY_PERCENTAGE', payload: percentage });
 };
 
+const setBrightness = (
+  dispatch: React.Dispatch<PaxActions>,
+  brightness: number,
+) => {
+  dispatch({ type: 'SET_BRIGHTNESS', payload: brightness });
+};
+
 export const buildActions = (
   dispatch: React.Dispatch<PaxActions>,
 ): BuiltPaxActions => {
@@ -71,5 +80,6 @@ export const buildActions = (
     setBatteryPercentage: (percentage: number) =>
       setBatteryPercentage(dispatch, percentage),
     resetPaxState: () => resetPaxState(dispatch),
+    setBrightness: (brightness: number) => setBrightness(dispatch, brightness),
   };
 };
