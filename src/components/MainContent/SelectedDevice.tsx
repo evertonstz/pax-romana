@@ -6,7 +6,9 @@ import {
   BatteryPercentageMessage,
   BrightnessMessage,
   ColorThemeMessage,
+  RequestStatusMessage,
 } from '@/pax/core/messages';
+import { Messages } from '@/pax/shared/enums';
 import { ColorTheme } from '@/pax/shared/types';
 import { usePaxContext } from '@/state/hooks';
 import { isEqual } from 'lodash';
@@ -128,6 +130,21 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
         variant="secondary"
       >
         {bluetoothState.connected ? 'Disconnect' : 'Connect'}
+      </Button>
+      <Button
+        onClick={() => {
+          const toPost = post(
+            RequestStatusMessage.createWithMessage([
+              Messages.ATTRIBUTE_COLOR_THEME,
+              Messages.ATTRIBUTE_BRIGHTNESS,
+            ]),
+            currentDevice,
+          );
+          void bluetoothState.writeToMainService(toPost.packet);
+        }}
+        variant="secondary"
+      >
+        Update stats
       </Button>
       <ThemePicker
         loading={!bluetoothState.connected}
