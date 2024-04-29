@@ -30,35 +30,12 @@ export class BrightnessMessage
 
       this.brightness = brightnessPercentage;
     } else if (builder instanceof BrightnessMessageBuilderFromValue) {
-      this.brightness = 1;
-      //   this.brightness = builder.getTheme();
-      //   const extractIntFromColorMode = (colorMode: ColorMode): number[] => {
-      //     return [
-      //       colorMode.color1.red,
-      //       colorMode.color1.green,
-      //       colorMode.color1.blue,
-      //       colorMode.color2.red,
-      //       colorMode.color2.green,
-      //       colorMode.color2.blue,
-      //       colorMode.animation,
-      //       colorMode.frequency,
-      //     ];
-      //   };
-      //   const arr = new Uint8Array([
-      //     this.messageType,
-      //     Object.keys(this.brightness).length,
-      //     ...extractIntFromColorMode(this.brightness.startup),
-      //     ...extractIntFromColorMode(this.brightness.heating),
-      //     ...extractIntFromColorMode(this.brightness.regulating),
-      //     ...extractIntFromColorMode(this.brightness.standby),
-      //   ]);
-      //   const view = new PaxDecryptedPacket(
-      //     arr.buffer,
-      //     arr.byteOffset,
-      //     arr.byteLength,
-      //   );
-      //   view.setUint8(0, this.messageType);
-      //   this.packet = view;
+      this.brightness = builder.getBrightness();
+      const buffer = new ArrayBuffer(16);
+      const view = new PaxDecryptedPacket(buffer);
+      view.setUint8(0, this.messageType);
+      view.setUint8(1, this.brightnessToAbsolute(this.brightness));
+      this.packet = view;
     } else {
       throw new Error('Invalid builder');
     }
@@ -71,15 +48,19 @@ export class BrightnessMessage
     );
   }
 
+  private brightnessToAbsolute(brightness: number): number {
+    return brightness * (this.PaxBrightnessMax - this.PaxBrightnessMin);
+  }
+
   static createWithPacket(packet: PaxDecryptedPacket): BrightnessMessage {
     const builder = new BrightnessMessageBuilderFromPacket<BrightnessMessage>();
     builder.setPacket(packet);
     return new BrightnessMessage(builder);
   }
 
-  static createWithTheme(brightness: number): BrightnessMessage {
+  static createWithBrightness(brightness: number): BrightnessMessage {
     const builder = new BrightnessMessageBuilderFromValue<BrightnessMessage>();
-    builder.setTheme(brightness);
+    builder.setBrightness(brightness);
     return new BrightnessMessage(builder);
   }
 }
@@ -110,12 +91,12 @@ export class BrightnessMessageBuilderFromPacket<T extends BrightnessMessage> {
 export class BrightnessMessageBuilderFromValue<T extends BrightnessMessage> {
   private brightness?: number;
 
-  setTheme(brightness: number): BrightnessMessageBuilderFromValue<T> {
+  setBrightness(brightness: number): BrightnessMessageBuilderFromValue<T> {
     this.brightness = brightness;
     return this;
   }
 
-  getTheme(): number {
+  getBrightness(): number {
     if (!this.brightness) {
       throw new Error('Theme is not set');
     }

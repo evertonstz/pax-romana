@@ -6,6 +6,8 @@ export const initialPaxState: PaxState = {
   heaterSetPointTemperature: 0,
   heatingSate: undefined,
   colorTheme: undefined,
+  batteryPercentage: undefined,
+  brightness: undefined,
 };
 
 const reducer = (state: PaxState, action: PaxActions): PaxState => {
