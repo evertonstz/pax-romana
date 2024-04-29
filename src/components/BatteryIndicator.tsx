@@ -35,7 +35,7 @@ export function BatteryIndicator() {
 
   return (
     <Tooltip>
-      <TooltipTrigger>{getIcon()}</TooltipTrigger>
+      <TooltipTrigger asChild>{getIcon()}</TooltipTrigger>
       <TooltipContent>{tooltipContent}</TooltipContent>
     </Tooltip>
   );
