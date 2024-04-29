@@ -1,5 +1,5 @@
 import { Pax } from '@/pax';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { PaxBluetoothCharacteristics } from './enums/PaxBluetoothCharacteristics';
 import { PaxBluetoothServices } from './enums/PaxBluetoothServices';
@@ -34,6 +34,11 @@ export const usePaxBluetoothServices = (
     Object.values(PaxBluetoothServices),
   );
 
+  const pendingPacketsQueue = useMemo<Pax.lib.PaxEncryptedPacket[]>(
+    () => [],
+    [],
+  );
+
   const startListening = useCallback(
     (callback: (event: Event) => void): Promise<void> => {
       if (!connected) return Promise.reject('Not connected');
@@ -61,15 +66,35 @@ export const usePaxBluetoothServices = (
       });
     }, [readFromCharacteristic, serial]);
 
-  const writeToMainService = useCallback(
-    async (packet: Pax.lib.PaxEncryptedPacket): Promise<void> => {
-      return writeToCharacteristic(
+  const writeToMainServiceQueue = useCallback(async (): Promise<void> => {
+    if (!pendingPacketsQueue.length) return;
+
+    const packet = pendingPacketsQueue.shift();
+    if (!packet) return;
+
+    try {
+      await writeToCharacteristic(
         PaxBluetoothServices.MainService,
         PaxBluetoothCharacteristics.Write,
         packet,
       );
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error writing to Pax device:', error);
+      // Implement retry logic here (e.g., retry a limited number of times)
+    } finally {
+      if (pendingPacketsQueue.length) {
+        void writeToMainServiceQueue();
+      }
+    }
+  }, [pendingPacketsQueue, writeToCharacteristic]);
+
+  const writeToMainService = useCallback(
+    (packet: Pax.lib.PaxEncryptedPacket): Promise<void> => {
+      pendingPacketsQueue.push(packet);
+      return writeToMainServiceQueue();
     },
-    [writeToCharacteristic],
+    [pendingPacketsQueue, writeToMainServiceQueue],
   );
 
   return {
