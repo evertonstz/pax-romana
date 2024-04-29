@@ -9,3 +9,4 @@ export * from './HeatingStateMessage';
 export * from './ColorThemeMessage';
 export * from './BatteryPercentageMessage';
 export * from './BrightnessMessage';
+export * from './RequestStatusMessage';
