@@ -4,6 +4,7 @@ import {
   ActualTemperatureMessage,
   BatteryPercentageMessage,
   BrightnessMessage,
+  HapticsMessage,
   HeaterSetPointMessage,
   HeatingStateMessage,
   MessageAbs,
@@ -39,6 +40,8 @@ export const decodeDecryptedPacket = (
       return new BatteryPercentageMessage(packet);
     case Messages.ATTRIBUTE_BRIGHTNESS:
       return BrightnessMessage.createWithPacket(packet);
+    case Messages.ATTRIBUTE_HAPTIC_MODE:
+      return HapticsMessage.createWithPacket(packet);
     default:
       return new UnknownMessage(messageType, packet);
   }

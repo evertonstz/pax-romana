@@ -7,4 +7,5 @@ export interface PaxState {
   colorTheme?: Pax.lib.ColorTheme;
   batteryPercentage?: number;
   brightness?: number;
+  haptics?: number;
 }
