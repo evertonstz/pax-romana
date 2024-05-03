@@ -6,6 +6,7 @@ import {
   BatteryPercentageMessage,
   BrightnessMessage,
   ColorThemeMessage,
+  HapticsMessage,
   RequestStatusMessage,
 } from '@/pax/core/messages';
 import { Messages } from '@/pax/shared/enums';
@@ -59,6 +60,9 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
         }
         if (message instanceof BrightnessMessage) {
           actions.setBrightness(message.brightness);
+        }
+        if (message instanceof HapticsMessage) {
+          actions.setHaptics(message.percentage);
         }
       })
       .catch(e => {
@@ -119,6 +123,23 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
           void bluetoothState.writeToMainService(toPost.packet);
         }}
       />
+      <Slider
+        disabled={!bluetoothState.connected && !state.haptics}
+        max={1}
+        step={0.1}
+        value={state.haptics ? [state.haptics] : [0]}
+        onValueChange={value => {
+          actions.setHaptics(value[0]);
+        }}
+        onValueCommit={value => {
+          const toPost = post(
+            HapticsMessage.createWithHaptics(value[0]),
+            currentDevice,
+          );
+          void bluetoothState.writeToMainService(toPost.packet);
+        }}
+      />
+
       <HeaterStatus heaterStatus={state.heatingSate} />
       <h1>Device: {!currentDevice ? '' : currentDevice.serial}</h1>
       <Button
@@ -137,6 +158,7 @@ export const SelectedDevice = ({ currentDevice }: SelectedDeviceProps) => {
             RequestStatusMessage.createWithMessage([
               Messages.ATTRIBUTE_COLOR_THEME,
               Messages.ATTRIBUTE_BRIGHTNESS,
+              Messages.ATTRIBUTE_HAPTIC_MODE,
             ]),
             currentDevice,
           );
