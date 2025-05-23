@@ -1,5 +1,5 @@
 import { Pax } from '@/pax';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react'; 
 
 import { PaxBluetoothCharacteristics } from './enums/PaxBluetoothCharacteristics';
 import { PaxBluetoothServices } from './enums/PaxBluetoothServices';
@@ -38,6 +38,7 @@ export const usePaxBluetoothServices = (
     () => [],
     [],
   );
+  const isWritingRef = useRef<boolean>(false); 
 
   const startListening = useCallback(
     (callback: (event: Event) => void): Promise<void> => {
@@ -66,11 +67,20 @@ export const usePaxBluetoothServices = (
       });
     }, [readFromCharacteristic, serial]);
 
-  const writeToMainServiceQueue = useCallback(async (): Promise<void> => {
-    if (!pendingPacketsQueue.length) return;
+  let writeToMainServiceQueue: () => Promise<void>;
 
+  writeToMainServiceQueue = useCallback(async (): Promise<void> => {
+    if (!pendingPacketsQueue.length || isWritingRef.current) {
+      return;
+    }
+
+    isWritingRef.current = true;
     const packet = pendingPacketsQueue.shift();
-    if (!packet) return;
+    
+    if (!packet) {
+      isWritingRef.current = false; 
+      return;
+    }
 
     try {
       await writeToCharacteristic(
@@ -79,20 +89,23 @@ export const usePaxBluetoothServices = (
         packet,
       );
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error('Error writing to Pax device:', error);
-      // Implement retry logic here (e.g., retry a limited number of times)
     } finally {
-      if (pendingPacketsQueue.length) {
-        void writeToMainServiceQueue();
+      isWritingRef.current = false;
+      if (pendingPacketsQueue.length > 0) {
+        // Simpler recursive call, still async due to function signature
+        // but avoids extra microtask from Promise.resolve().then()
+        void writeToMainServiceQueue(); 
       }
     }
   }, [pendingPacketsQueue, writeToCharacteristic]);
 
   const writeToMainService = useCallback(
-    (packet: Pax.lib.PaxEncryptedPacket): Promise<void> => {
+    async (packet: Pax.lib.PaxEncryptedPacket): Promise<void> => {
       pendingPacketsQueue.push(packet);
-      return writeToMainServiceQueue();
+      if (!isWritingRef.current) {
+        await writeToMainServiceQueue(); 
+      }
     },
     [pendingPacketsQueue, writeToMainServiceQueue],
   );

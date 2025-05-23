@@ -37,30 +37,39 @@ export interface BluetoothHookState {
 }
 
 const parseErrors = (error: unknown): void => {
-  if (error instanceof Error) {
-    if (error.message === 'GATT operation failed for unknown reason.') {
-      throw new BluetoothUnknownException(error.message);
+  // Using duck typing as instanceof Error seems unreliable in test environment
+  if (error && typeof error === 'object' && 'message' in error && 'name' in error) {
+    const errorLike = error as { name: string; message: string }; // Cast for easier access
+
+    // Priority 1: Specific known messages that might override error.name classification
+    if (errorLike.message === 'User cancelled the requestDevice() chooser.') {
+      throw new BluetoothAbortException(errorLike.message);
     }
-    if (error.message === 'User cancelled the requestDevice() chooser.') {
-      throw new BluetoothAbortException(error.message);
+    if (errorLike.message === 'GATT operation failed for unknown reason.') {
+      throw new BluetoothUnknownException(errorLike.message);
     }
 
-    switch (error.name) {
-      case 'NotFoundError':
-        throw new BluetoothAdapterNotFoundException(error.message);
-      case 'NetworkError':
-        throw new BluetoothNetworkException(error.message);
-      case 'SecurityError':
-        throw new BluetoothSecurityException(error.message);
-      case 'NotAllowedError':
-        throw new BluetoothNotAllowedException(error.message);
-      case 'AbortError':
-        throw new BluetoothAbortException(error.message);
-      case 'NotSupportedError':
-        throw new BluetoothNotSupportedException(error.message);
-      default:
-        throw new BluetoothUnknownException(error.message);
+    // Priority 2: Standard DOMException names using if/else if
+    const errorName = errorLike.name;
+    if (errorName === 'NotFoundError') {
+      throw new BluetoothAdapterNotFoundException(errorLike.message);
+    } else if (errorName === 'NetworkError') {
+      throw new BluetoothNetworkException(errorLike.message);
+    } else if (errorName === 'SecurityError') {
+      throw new BluetoothSecurityException(errorLike.message);
+    } else if (errorName === 'NotAllowedError') {
+      throw new BluetoothNotAllowedException(errorLike.message);
+    } else if (errorName === 'AbortError') {
+      throw new BluetoothAbortException(errorLike.message);
+    } else if (errorName === 'NotSupportedError') {
+      throw new BluetoothNotSupportedException(errorLike.message);
+    } else {
+      // Fallback for other Error-like types not matching specific names or messages
+      throw new BluetoothUnknownException(`Unhandled Error (${errorName}): ${errorLike.message}`);
     }
+  } else {
+    // Handle cases where the thrown 'error' is not Error-like
+    throw new BluetoothUnknownException(String(error || 'Unknown non-Error object thrown'));
   }
 };
 
@@ -76,7 +85,8 @@ const useBluetooth = (
 
   const [isListenerAdded, setIsListenerAdded] = useState<boolean>(false);
 
-  const connect = async () => {
+  const connect = async (): Promise<void> => {
+    console.log('[useBluetooth] connect: Attempting to connect...');
     try {
       const btDevice = await navigator.bluetooth.requestDevice({
         filters: [
@@ -86,43 +96,64 @@ const useBluetooth = (
         ],
         optionalServices: optionalServices,
       });
+      console.log('[useBluetooth] connect: Device requested.');
 
-      const server = await btDevice.gatt?.connect();
+      const gattServer = await btDevice.gatt?.connect();
+      console.log('[useBluetooth] connect: GATT server connected attempt.');
 
-      if (server) {
-        setServer(server);
+      if (gattServer) {
+        console.log('[useBluetooth] connect: GATT server obtained. Setting state.');
+        setServer(gattServer);
         setConnected(true);
 
-        // Listen for the disconnect event
         btDevice.addEventListener('gattserverdisconnected', () => {
+          console.log('[useBluetooth] Event: gattserverdisconnected triggered!');
           setConnected(false);
           setServer(undefined);
           setIsListenerAdded(false);
         });
+      } else {
+        console.log('[useBluetooth] connect: No GATT server obtained.');
       }
     } catch (error) {
+      console.error('[useBluetooth] connect: Error during connection.', error);
       setConnected(false);
-      parseErrors(error);
+      parseErrors(error); 
     }
   };
 
   const addCharacteristicListener = useCallback(
-    async (characteristicUUID: string, callback: (event: Event) => void) => {
-      if (!connected) throw new Error('Device is not connected');
+    async (characteristicUUID: string, callback: (event: Event) => void): Promise<void> => {
+      console.log(`[useBluetooth] addCharacteristicListener: Called. Connected: ${connected}, Server: ${!!server}, ListenerAdded: ${isListenerAdded}`);
+      if (!connected) {
+        console.error('[useBluetooth] addCharacteristicListener: Not connected, throwing error.');
+        throw new Error('Device is not connected');
+      }
 
       if (server && !isListenerAdded) {
+        console.log('[useBluetooth] addCharacteristicListener: Server exists and listener not yet added. Proceeding.');
         try {
           const service = await server.getPrimaryService(primaryService);
           const characteristic =
             await service.getCharacteristic(characteristicUUID);
 
           const toNotify = await characteristic.startNotifications();
-          toNotify.addEventListener('characteristicvaluechanged', callback),
-            setIsListenerAdded(true);
+          toNotify.addEventListener('characteristicvaluechanged', callback);
+          setIsListenerAdded(true);
+          console.log('[useBluetooth] addCharacteristicListener: Listener added successfully.');
+          return; 
         } catch (error) {
+          console.error('[useBluetooth] addCharacteristicListener: Error adding listener.', error);
           parseErrors(error);
         }
+      } else {
+        if (!server) console.log('[useBluetooth] addCharacteristicListener: Skipped, server is null.');
+        if (isListenerAdded) console.log('[useBluetooth] addCharacteristicListener: Skipped, listener already added.');
       }
+      // If execution reaches here due to conditions not met or error in try-catch that parseErrors didn't stop
+      if (isListenerAdded) return; // Successfully no-op if listener was already added
+      // Fallback if something unexpected happened and parseErrors didn't throw
+      throw new Error("addCharacteristicListener: Could not add listener or unexpected state.");
     },
     [connected, server, isListenerAdded, primaryService],
   );
@@ -139,11 +170,14 @@ const useBluetooth = (
         const characteristic =
           await service?.getCharacteristic(characteristicUUID);
         const result = await characteristic?.readValue();
+        if (!result) {
+          throw new BluetoothUnknownException('Read operation returned no value');
+        }
         return result;
       } catch (error) {
-        parseErrors(error);
-        throw new BluetoothUnknownException(String(error));
+        parseErrors(error); 
       }
+      throw new Error("Internal Error: parseErrors did not throw in readFromCharacteristic.");
     },
     [connected, server],
   );
@@ -160,32 +194,37 @@ const useBluetooth = (
         const service = await server.getPrimaryService(serviceUUID);
         const characteristic =
           await service.getCharacteristic(characteristicUUID);
-        // use writeValueWithoutResponse instead
         await characteristic.writeValueWithoutResponse(value.buffer);
-        // await characteristic.writeValue(value);
+        return; 
       } catch (error) {
-        parseErrors(error);
-        throw new BluetoothUnknownException(String(error));
+        parseErrors(error); 
       }
+      throw new Error("Internal Error: parseErrors did not throw in writeToCharacteristic.");
     },
     [connected, server],
   );
 
   const disconnect = useCallback(() => {
+    console.log('[useBluetooth] disconnect: Called.');
     if (server) {
-      server.disconnect();
+      console.log('[useBluetooth] disconnect: Server found, disconnecting.');
+      server.disconnect(); // This is the mockServer.disconnect()
       setServer(undefined);
       setConnected(false);
       setIsListenerAdded(false);
+    } else {
+      console.log('[useBluetooth] disconnect: No server to disconnect.');
     }
   }, [server]);
 
   useEffect(() => {
+    console.log('[useBluetooth] useEffect: Running effect (setup/cleanup). Current server:', server ? 'defined' : 'undefined');
     // Cleanup on unmount
     return () => {
+      console.log('[useBluetooth] useEffect: Cleanup function called. Current server in cleanup closure:', server ? 'defined' : 'undefined');
       disconnect();
     };
-  }, [disconnect]);
+  }, [disconnect]); // `disconnect` changes when `server` changes.
 
   return {
     server,
