@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { checkBluetoothSupport } from './checkBluetoothSupport';
 import {
+  BaseBluetoothException,
   BluetoothAbortException,
   BluetoothAdapterNotFoundException,
   BluetoothNetworkException,
@@ -37,6 +39,8 @@ export interface BluetoothHookState {
 }
 
 const parseErrors = (error: unknown): void => {
+  if (error instanceof BaseBluetoothException) throw error;
+
   if (error instanceof Error) {
     if (error.message === 'GATT operation failed for unknown reason.') {
       throw new BluetoothUnknownException(error.message);
@@ -78,6 +82,7 @@ const useBluetooth = (
 
   const connect = async () => {
     try {
+      checkBluetoothSupport();
       const btDevice = await navigator.bluetooth.requestDevice({
         filters: [
           {
