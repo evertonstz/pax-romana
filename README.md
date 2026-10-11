@@ -35,12 +35,3 @@ If clicking **Connect** does not open the device chooser, check in DevTools:
 
 References: [Web Bluetooth implementation status](https://github.com/whatwg/bluetooth/blob/main/implementation-status.md)
 and [Chrome Flatpak Bluetooth permissions](https://github.com/flathub/com.google.Chrome/issues/18).
-
-### Vite WebSocket errors
-
-Vite's development WebSocket provides hot reload; its failure does not remove
-`navigator.bluetooth`. First try the exact local URL printed by `pnpm dev` and
-reload the page. If serving Vite through a reverse proxy, the proxy must forward
-WebSocket upgrades as well as HTTP under `/pax-romana/`. Configure `server.hmr`
-for that proxy's actual public host/port only if necessary; do not assume its
-WebSocket port is always 5173.
