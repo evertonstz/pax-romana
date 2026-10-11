@@ -1,5 +1,6 @@
 import { Messages } from '../../shared/enums/Messages';
 import { PaxDecryptedPacket } from '../../shared/models/Packet';
+import { celsiusToRaw, rawToCelsius } from '../../shared/utils/pax3Temperature';
 import { InvalidPacketTypeException } from '../exceptions';
 import { MessageAbs } from './MessageAbs';
 import { ReadAndWriteMessageAbs } from './ReadAndWriteMessageAbs';
@@ -11,7 +12,7 @@ export class ReadOnlyTemperatureMessage implements MessageAbs {
 
   constructor(messageType: Messages, packet: PaxDecryptedPacket) {
     this.validatePacket(packet);
-    const temperature = packet.getUint16(1, true) / 10.0;
+    const temperature = rawToCelsius(packet.getUint16(1, true));
     this.temperature = temperature;
     this.messageType = messageType;
     this.packet = packet;
@@ -43,7 +44,7 @@ export abstract class ReadAndWriteTemperatureMessage
     if (builder instanceof ReadAndWriteTemperatureMessageBuilderFromPacket) {
       // infer temperature and packet
       this.packet = builder.getPacket();
-      this.temperature = this.packet.getUint16(1, true) / 10.0;
+      this.temperature = rawToCelsius(this.packet.getUint16(1, true));
     } else if (
       builder instanceof ReadAndWriteTemperatureMessageBuilderFromTemperature
     ) {
@@ -54,7 +55,7 @@ export abstract class ReadAndWriteTemperatureMessage
       const view = new PaxDecryptedPacket(buffer);
       // sets message type and message content
       view.setUint8(0, this.messageType);
-      view.setUint16(1, Math.round(this.temperature * 10), true);
+      view.setUint16(1, celsiusToRaw(this.temperature), true);
       this.packet = view;
     } else {
       throw new Error('Invalid builder');

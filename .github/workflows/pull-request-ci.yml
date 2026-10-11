@@ -16,15 +16,21 @@ jobs:
     
     - name: Setup pnpm
       uses: pnpm/action-setup@v3
-        
+
+    - name: Setup node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'pnpm'
+
     - name: Install dependencies
-      run: pnpm i
+      run: pnpm install --frozen-lockfile
 
     - name: Run ESLint and Prettier
       run: pnpm run lint
       
     - name: Run Typescript static checks
-      run: tsc --noEmit
+      run: pnpm exec tsc --noEmit
 
     - name: Run unit tests
       run: pnpm test

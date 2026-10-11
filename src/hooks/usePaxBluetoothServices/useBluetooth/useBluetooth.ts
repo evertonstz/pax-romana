@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { checkBluetoothSupport } from './checkBluetoothSupport';
 import {
+  BaseBluetoothException,
   BluetoothAbortException,
   BluetoothAdapterNotFoundException,
   BluetoothNetworkException,
@@ -37,6 +39,8 @@ export interface BluetoothHookState {
 }
 
 const parseErrors = (error: unknown): void => {
+  if (error instanceof BaseBluetoothException) throw error;
+
   if (error instanceof Error) {
     if (error.message === 'GATT operation failed for unknown reason.') {
       throw new BluetoothUnknownException(error.message);
@@ -78,6 +82,7 @@ const useBluetooth = (
 
   const connect = async () => {
     try {
+      checkBluetoothSupport();
       const btDevice = await navigator.bluetooth.requestDevice({
         filters: [
           {
@@ -160,9 +165,9 @@ const useBluetooth = (
         const service = await server.getPrimaryService(serviceUUID);
         const characteristic =
           await service.getCharacteristic(characteristicUUID);
-        // use writeValueWithoutResponse instead
-        await characteristic.writeValueWithoutResponse(value.buffer);
-        // await characteristic.writeValue(value);
+        // The official app writes with response (WRITE_TYPE_DEFAULT). Windows
+        // and Linux reject writeValueWithoutResponse on this characteristic.
+        await characteristic.writeValueWithResponse(value.buffer);
       } catch (error) {
         parseErrors(error);
         throw new BluetoothUnknownException(String(error));
